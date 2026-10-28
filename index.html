@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  Michelle Sammons, UGC portfolio. Built 2026-10-28 from Jaden Johnson's approved calm light site
+  (Alberta/website/light, 2026-10-21), recolored purple and white per Zack.
+
+  TOKENS (contrast measured against --bg unless noted)
+    --bg      #FCFAFE  page background, white with a faint lavender cast
+    --ink     #231A30  text, 16.0:1
+    --muted   #5E5469  secondary text, 6.9:1
+    --purple  #6B3FD0  the one accent: buttons, the italic name, focus rings. 6.2:1 as text; white on it 6.5:1
+    --purple-dk #5A31B8 same hue, hover only. White on it 8.2:1
+    --wash    #F0E9FB  purple tint for the contact panel (ink 14.1:1, purple 5.5:1, muted 6.0:1)
+    --paper   #FFFFFF  inputs and the play chip
+
+  TYPE: Fraunces (display, SOFT 100) over Manrope (body), the pairing on Jaden's approved site, kept so
+    the creator sites match. Emphasis is Fraunces italic, never a second family.
+
+  SHAPE: cards and video frames 20px, panel 28px, buttons and chips full pill, inputs 14px, phone 34-38px.
+
+  MOTION: none (Zack 2026-10-21 rule). No load-in, no scroll reveals, no marquee, no hover lift,
+    no tilt, no parallax. Only color and opacity change on hover/focus.
+    Video: one plays at a time. The hero autoplays muted and loops only while on screen and only
+    without reduced motion, and shows a pause chip while it plays. Grid cards play ONLY on tap
+    and stop on a second tap or when another starts. Off-screen videos pause.
+
+  ICONS: Phosphor (@phosphor-icons/core 2.1.1) paths, inlined.
+  CONTACT: no form backend, so submit opens a pre-filled email to Michelle. Nothing is posted.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Michelle Sammons | UGC creator</title>
+<meta name="description" content="Michelle Sammons is a UGC creator. Watch her short vertical ads for Kalshi.">
+<meta name="theme-color" content="#FCFAFE">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2716%27 fill=%27%236B3FD0%27/%3E%3C/svg%3E">
+<meta property="og:title" content="Michelle Sammons | UGC creator">
+<meta property="og:description" content="Short vertical UGC ads by Michelle Sammons.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@400..700&display=swap">
+<link rel="preload" as="image" href="assets/videos/posters/kalshi-tuesday-nights.jpg">
+<style>
+  :root {
+    --bg: #FCFAFE;
+    --ink: #231A30;
+    --muted: #5E5469;
+    --purple: #6B3FD0;
+    --purple-dk: #5A31B8;
+    --wash: #F0E9FB;
+    --paper: #FFFFFF;
+    --line: rgb(35 26 48 / 0.12);
+    --shadow: 0 1px 2px rgb(58 30 120 / 0.08), 0 12px 32px -12px rgb(58 30 120 / 0.3);
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+    --r-card: 20px;
+    --r-panel: 28px;
+    --r-input: 14px;
+
+    --gutter: 16px;
+    --max: 1240px;
+    --nav-h: 64px;
+
+    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+    --sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    color-scheme: light;
+  }
+  @media (min-width: 768px) { :root { --gutter: 32px; } }
+  @media (min-width: 1200px) { :root { --gutter: 48px; } }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 12px);
+    background: var(--bg);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  @media (pointer: fine) { html { overscroll-behavior: none; } }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  img, video, svg { display: block; max-width: 100%; }
+  a { color: inherit; }
+  h1, h2, h3, p, figure, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+
+  .wrap {
+    width: 100%;
+    max-width: calc(var(--max) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
+  }
+
+  .skip {
+    position: absolute; left: 12px; top: -48px; z-index: 30;
+    background: var(--ink); color: var(--bg);
+    padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 600;
+  }
+  .skip:focus-visible { top: calc(12px + env(safe-area-inset-top, 0px)); }
+
+  :focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+
+  button, .btn, .nav a {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  button { font: inherit; color: inherit; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 48px; padding: 0 24px;
+    border-radius: 999px; border: 1px solid transparent;
+    font-weight: 650; font-size: 1rem; line-height: 1; text-decoration: none; white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+  }
+  .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .btn-primary { background: var(--purple); color: #fff; }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: rgb(35 26 48 / 0.28); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover { background: var(--purple-dk); }
+    .btn-ghost:hover { border-color: var(--purple); color: var(--purple); }
+  }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: rgb(252 250 254 / 0.86);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms ease;
+  }
+  .nav.is-stuck { border-bottom-color: var(--line); }
+  @media (prefers-reduced-transparency: reduce) { .nav { background: var(--bg); } }
+  .nav-inner { height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand {
+    display: inline-flex; align-items: center; min-height: 44px;
+    font-family: var(--serif); font-variation-settings: "SOFT" 100;
+    font-size: 1.3rem; font-weight: 560; letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
+  }
+  .nav-links { display: none; gap: 28px; font-weight: 600; font-size: 0.95rem; }
+  .nav-links a { text-decoration: none; color: var(--muted); padding: 8px 0; transition: color 200ms ease; }
+  @media (hover: hover) and (pointer: fine) { .nav-links a:hover { color: var(--ink); } }
+  .nav-right { display: flex; align-items: center; gap: 28px; }
+  .nav .btn { min-height: 44px; padding: 0 18px; font-size: 0.95rem; }
+  @media (min-width: 720px) { .nav-links { display: flex; } }
+  /* The full name is longer than Jaden's: below 380px the name and button shrink so the bar fits at 320px */
+  @media (max-width: 379px) {
+    .brand { font-size: 1.1rem; }
+    .nav .btn { padding: 0 14px; font-size: 0.875rem; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { overflow-x: clip; }
+  .hero-inner {
+    display: grid; gap: 24px;
+    padding-top: 16px; padding-bottom: 16px;
+  }
+  .eyebrow { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .hero h1 {
+    margin-top: 8px;
+    font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
+    font-weight: 420;
+    font-size: clamp(2.6rem, 11.5vw, 4.6rem);
+    line-height: 1.04; letter-spacing: -0.025em;
+    padding-bottom: 4px;
+    text-wrap: balance;
+  }
+  .hero h1 em { font-style: italic; font-weight: 400; color: var(--purple); }
+  .hero-sub { margin-top: 16px; font-size: 1.0625rem; line-height: 1.55; color: var(--muted); max-width: 40ch; text-wrap: pretty; }
+  .hero-ctas { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .sound-toggle { padding: 0 20px; }
+
+  .stage { position: relative; display: grid; justify-items: center; align-content: start; }
+  .phone-wrap { position: relative; display: grid; justify-items: center; }
+  .phone-wrap::before {
+    content: ""; position: absolute; z-index: 0;
+    width: 124%; aspect-ratio: 1; border-radius: 50%;
+    background: var(--purple); opacity: 0.9;
+    top: 50%; left: 50%; translate: -50% -54%;
+  }
+  .phone {
+    position: relative; z-index: 1;
+    width: 200px;
+    padding: 8px; border-radius: 34px;
+    background: var(--ink);
+    box-shadow: 0 2px 4px rgb(35 26 48 / 0.18), 0 30px 60px -20px rgb(58 30 120 / 0.55);
+  }
+  .phone .media { border-radius: 26px; }
+  .phone .island {
+    position: absolute; z-index: 3; top: 16px; left: 50%; translate: -50% 0;
+    width: 30%; height: 16px; border-radius: 999px; background: var(--ink); pointer-events: none;
+  }
+  .stage-meta {
+    position: relative; z-index: 1; margin-top: 16px;
+    font-size: 0.875rem; line-height: 1.35; color: var(--muted); text-align: center;
+  }
+  .stage-meta strong { color: var(--ink); font-weight: 650; }
+
+  /* Phones from 370px: name on top, then copy and buttons beside a smaller phone */
+  @media (min-width: 370px) and (max-width: 899px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "e e" "h h" "s p" "c p" ". p";
+      grid-template-rows: auto auto auto auto 1fr;
+      column-gap: 14px; row-gap: 0;
+    }
+    .hero-copy { display: contents; }
+    .eyebrow { grid-area: e; }
+    .hero h1 { grid-area: h; }
+    .hero-sub { grid-area: s; margin-top: 16px; font-size: 1rem; line-height: 1.5; }
+    .hero-ctas { grid-area: c; margin-top: 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .stage { grid-area: p; margin-top: 20px; }
+    .phone { width: clamp(150px, 40vw, 240px); padding: 7px; border-radius: 28px; }
+    .phone .media { border-radius: 21px; }
+    .phone .island { top: 13px; height: 13px; }
+    .stage-meta { margin-top: 12px; font-size: 0.8125rem; max-width: 18ch; }
+  }
+
+  @media (min-width: 900px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      align-items: center; gap: 48px;
+      padding-top: 28px; padding-bottom: 8px;
+    }
+    .hero h1 { font-size: clamp(3.4rem, 6.4vw, 5.5rem); }
+    .hero-sub { font-size: 1.1875rem; margin-top: 18px; }
+    .phone { width: 220px; padding: 9px; border-radius: 38px; }
+    .phone .media { border-radius: 29px; }
+    .phone .island { top: 18px; height: 18px; }
+    .phone-wrap::before { width: 172%; max-width: 420px; }
+  }
+
+  /* ---------- Shared video player ---------- */
+  .media {
+    position: relative; overflow: hidden; isolation: isolate;
+    aspect-ratio: 9 / 16;
+    border-radius: var(--r-card);
+    background: #E7DFF3;
+  }
+  .media video { width: 100%; height: 100%; object-fit: cover; }
+  .media .hit {
+    position: absolute; inset: 0; z-index: 1;
+    border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer;
+    border-radius: inherit;
+  }
+  .media .hit:focus-visible { outline-offset: -3px; outline-width: 3px; }
+  .chip {
+    position: absolute; z-index: 2; pointer-events: none;
+    left: 12px; bottom: 12px;
+    width: 44px; height: 44px; border-radius: 999px;
+    display: grid; place-items: center;
+    background: rgb(255 255 255 / 0.94); color: var(--ink);
+    box-shadow: 0 4px 14px -4px rgb(35 26 48 / 0.4);
+  }
+  .chip svg { width: 18px; height: 18px; }
+  .chip .i-pause { display: none; }
+  .is-playing .chip .i-play { display: none; }
+  .is-playing .chip .i-pause { display: block; }
+  .phone .chip { left: 10px; bottom: 10px; width: 40px; height: 40px; }
+  .phone .chip svg { width: 16px; height: 16px; }
+  .is-missing .chip, .is-missing .sound { display: none; }
+  .is-missing .hit { cursor: default; }
+  .sound {
+    position: absolute; z-index: 2; right: 10px; bottom: 10px;
+    width: 44px; height: 44px; border-radius: 999px; border: 0; padding: 0;
+    display: grid; place-items: center; cursor: pointer;
+    background: rgb(35 26 48 / 0.72); color: #fff;
+    opacity: 0; visibility: hidden;
+    transition: opacity 180ms var(--ease-out), visibility 0s linear 180ms;
+  }
+  .sound svg { width: 20px; height: 20px; }
+  .sound .i-on { display: none; }
+  .sound-on .sound .i-on { display: block; }
+  .sound-on .sound .i-off { display: none; }
+  .is-playing .sound { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .sound-ic { display: inline-flex; }
+  .sound-toggle .i-on { display: none; }
+  .sound-toggle.sound-on .i-on { display: block; }
+  .sound-toggle.sound-on .i-off { display: none; }
+  .phone .sound { display: none; }
+
+  /* ---------- Sections ---------- */
+  .section { padding-block: 56px; }
+  @media (min-width: 900px) { .section { padding-block: 80px; } }
+  .h2 {
+    font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
+    font-weight: 430; font-size: clamp(2.3rem, 7vw, 3.75rem);
+    line-height: 1.06; letter-spacing: -0.022em; text-wrap: balance;
+  }
+  .h2 em { font-style: italic; font-weight: 400; color: var(--purple); }
+  .lede { margin-top: 12px; color: var(--muted); font-size: 1.0625rem; max-width: 52ch; text-wrap: pretty; }
+
+  /* ---------- Work grid ---------- */
+  .section.work { padding-top: 8px; padding-bottom: 48px; }
+  @media (min-width: 900px) { .section.work { padding-top: 12px; padding-bottom: 64px; } }
+  .work .lede { margin-top: 6px; }
+  .work-head { display: grid; gap: 8px; }
+  @media (min-width: 900px) {
+    .work-head { grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 40px; }
+    .work-head .lede { margin: 0 0 0 auto; text-align: right; max-width: 44ch; padding-bottom: 8px; }
+  }
+
+  .grid {
+    --offset: 40px;
+    margin-top: 16px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px; row-gap: 24px;
+    padding-bottom: var(--offset);
+  }
+  .grid > li:nth-child(2n) { translate: 0 var(--offset); }
+  /* Two columns and an odd count: the last card sits centered on its own row */
+  @media (max-width: 767px) {
+    .grid > li:last-child:nth-child(odd) {
+      grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px);
+      translate: 0 var(--offset);
+    }
+  }
+  @media (min-width: 768px) {
+    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 20px; row-gap: 32px; --offset: 56px; margin-top: 28px; }
+    .grid > li:nth-child(2n) { translate: none; }
+    .grid > li:nth-child(3n+2) { translate: 0 var(--offset); }
+  }
+  @media (min-width: 1100px) {
+    .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); --offset: 48px; }
+    .grid > li:nth-child(3n+2) { translate: none; }
+    .grid > li:nth-child(5n+2), .grid > li:nth-child(5n+4) { translate: 0 var(--offset); }
+  }
+
+  .card .media { box-shadow: var(--shadow); }
+  .card figcaption {
+    margin-top: 12px; font-weight: 650; font-size: 0.95rem; line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+  .card figcaption b { font-weight: 650; }
+  .card figcaption span { display: block; margin-top: 2px; font-weight: 500; color: var(--muted); }
+
+  /* ---------- Brands ---------- */
+  .brands-label { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+  .brand-list {
+    margin-top: 14px;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    border-block: 1px solid var(--line);
+  }
+  .brand-list li {
+    font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
+    font-size: clamp(1.75rem, 5vw, 2.4rem); font-weight: 450; letter-spacing: -0.01em;
+    padding: 16px 18px; overflow-wrap: anywhere;
+  }
+
+  /* ---------- About ---------- */
+  .about-inner { display: grid; gap: 20px; }
+  .about-copy p { font-size: 1.1875rem; max-width: 44ch; color: var(--muted); text-wrap: pretty; }
+  .about-copy .btn { margin-top: 28px; }
+  @media (min-width: 900px) {
+    .about-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: start; }
+    .about-copy p { font-size: 1.3125rem; padding-top: 14px; }
+  }
+
+  /* ---------- Contact ---------- */
+  .section.contact { padding-top: 0; }
+  .panel {
+    background: var(--wash);
+    border-radius: var(--r-panel);
+    padding: 32px 20px;
+  }
+  @media (min-width: 768px) { .panel { padding: 56px; } }
+  @media (min-width: 1100px) { .panel { padding: 72px 80px; } }
+  .contact .h2 { max-width: 15ch; }
+  @media (min-width: 1100px) {
+    .panel { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; align-items: start; }
+    .panel form { margin-top: 0; }
+    .contact .h2 { max-width: 12ch; }
+  }
+  .contact .h2 em { display: block; padding-bottom: 4px; }
+  .contact .lede { color: var(--muted); }
+
+  form { margin-top: 32px; display: grid; gap: 20px; }
+  .row { display: grid; gap: 20px; }
+  @media (min-width: 768px) { .row { grid-template-columns: 1fr 1fr; } }
+  .field { display: grid; gap: 8px; align-content: start; }
+  .field label { font-weight: 650; font-size: 0.95rem; }
+  .field label .opt { font-weight: 500; color: var(--muted); }
+  .field input, .field textarea {
+    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
+    background: var(--paper);
+    border: 1px solid rgb(35 26 48 / 0.2); border-radius: var(--r-input);
+    padding: 13px 16px; min-height: 50px;
+    transition: border-color 160ms ease;
+  }
+  .field textarea { min-height: 140px; resize: vertical; line-height: 1.5; }
+  .field input::placeholder, .field textarea::placeholder { color: #766C82; opacity: 1; }
+  .field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; border-color: transparent; }
+  .field input[aria-invalid="true"] { border-color: #B4233C; }
+  .error { min-height: 1.4em; font-size: 0.9rem; font-weight: 600; color: #B4233C; }
+  .error:empty { min-height: 0; }
+  .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+  .form-foot .alt { font-size: 0.95rem; color: var(--muted); }
+  .form-foot .alt a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 650; color: var(--purple); text-underline-offset: 3px; overflow-wrap: anywhere; }
+  .hint { font-size: 0.875rem; color: var(--muted); }
+  .hint.is-near { color: #B4233C; font-weight: 600; }
+  .note { font-size: 0.95rem; font-weight: 600; min-height: 1.5em; }
+  .note:empty { min-height: 0; }
+
+  /* ---------- Footer ---------- */
+  footer { padding-block: 0 calc(40px + env(safe-area-inset-bottom, 0px)); }
+  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; border-top: 1px solid var(--line); padding-top: 28px; }
+  .foot .brand { font-size: 1.15rem; }
+  .foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; font-size: 0.95rem; color: var(--muted); }
+  .foot-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-underline-offset: 3px; overflow-wrap: anywhere; transition: color 200ms ease; }
+  @media (hover: hover) and (pointer: fine) { .foot-links a:hover { color: var(--purple); } }
+</style>
+</head>
+<body>
+<a class="skip" href="#work">Skip to the videos</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" translate="no">Michelle Sammons</a>
+    <div class="nav-right">
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-primary" href="#contact">Work with me</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">UGC creator</p>
+        <h1 id="hero-title" translate="no">Michelle <em>Sammons</em></h1>
+        <p class="hero-sub">I make short vertical ads that play like content, not commercials.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#work">See the work
+            <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M205.66,149.66l-72,72a8,8,0,0,1-11.32,0l-72-72a8,8,0,0,1,11.32-11.32L120,196.69V40a8,8,0,0,1,16,0V196.69l58.34-58.35a8,8,0,0,1,11.32,11.32Z"/></svg>
+          </a>
+          <button class="btn btn-ghost sound-toggle" type="button" data-sound-toggle aria-label="Unmute the Kalshi video">
+            <span class="sound-ic" aria-hidden="true"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></span>
+            <span data-sound-label>Unmute</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="phone-wrap"><div class="phone">
+          <span class="island" aria-hidden="true"></span>
+          <div class="media" data-player="hero" data-name="Kalshi">
+  <video muted playsinline loop preload="none" poster="assets/videos/posters/kalshi-tuesday-nights.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-tuesday-nights.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+        </div></div>
+        <p class="stage-meta"><strong translate="no">Kalshi</strong>, Love Island watch night</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section work" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <div class="work-head">
+        <h2 class="h2" id="work-title">Past work</h2>
+        <p class="lede">Tap any video to play it, and tap again to stop. Sound stays off until you turn it on.</p>
+      </div>
+      <ul class="grid">
+        <li><figure class="card">
+          <div class="media" data-player="card" data-name="Kalshi, Love Island, car selfie">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-car-promise.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-car-promise.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Love Island, car selfie video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Kalshi</b><span>Love Island, car selfie</span></figcaption>
+        </figure></li>
+        <li><figure class="card">
+          <div class="media" data-player="card" data-name="Kalshi, Dancing With The Stars trend">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-dancing-with-the-stars.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-dancing-with-the-stars.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Dancing With The Stars trend video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Kalshi</b><span>Dancing With The Stars trend</span></figcaption>
+        </figure></li>
+        <li><figure class="card">
+          <div class="media" data-player="card" data-name="Kalshi, Love Island, to camera">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-reality-tv.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-reality-tv.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Love Island, to camera video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Kalshi</b><span>Love Island, to camera</span></figcaption>
+        </figure></li>
+        <li><figure class="card">
+          <div class="media" data-player="card" data-name="Kalshi, Sportsbook payout comparison">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-sportsbooks.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-sportsbooks.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Sportsbook payout comparison video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Kalshi</b><span>Sportsbook payout comparison</span></figcaption>
+        </figure></li>
+        <li><figure class="card">
+          <div class="media" data-player="card" data-name="Kalshi, Love Island, POV celebration">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-faith-in-kenzie.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-faith-in-kenzie.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Love Island, POV celebration video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Kalshi</b><span>Love Island, POV celebration</span></figcaption>
+        </figure></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="brands" aria-labelledby="brands-title">
+    <div class="wrap">
+      <h2 class="brands-label" id="brands-title">Brands I’ve worked with</h2>
+      <ul class="brand-list" translate="no">
+        <li>Kalshi</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="wrap about-inner">
+      <h2 class="h2" id="about-title">Hey, I’m <em>Michelle.</em></h2>
+      <div class="about-copy">
+        <p>I’m a UGC creator. I film short vertical ads that feel like something a friend would post.</p>
+        <a class="btn btn-primary" href="#contact">Work with me</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact" aria-labelledby="contact-title">
+    <div class="wrap">
+      <div class="panel">
+        <div class="contact-head">
+          <h2 class="h2" id="contact-title">Got a product to film? <em>Let’s talk.</em></h2>
+          <p class="lede">Send the details and I’ll get back to you.</p>
+        </div>
+        <form id="contact-form" novalidate>
+          <div class="row">
+            <div class="field">
+              <label for="f-name">Your name <span class="opt">(optional)</span></label>
+              <input id="f-name" name="name" type="text" maxlength="120" autocomplete="name" placeholder="Jordan Lee…">
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" maxlength="254" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="jordan@brand.com…" required aria-describedby="f-email-error">
+              <p class="error" id="f-email-error" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-message">What brand are you growing?</label>
+            <textarea id="f-message" name="message" autocomplete="off" maxlength="1200" aria-describedby="f-message-hint" placeholder="Tell me about the product, timeline, and budget range…"></textarea>
+            <p class="hint" id="f-message-hint">Up to 1,200 characters.</p>
+          </div>
+          <div class="form-foot">
+            <button class="btn btn-primary" type="submit">Send inquiry
+              <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
+            </button>
+            <p class="alt">Or email me: <a href="mailto:michellesammonscollab@gmail.com?subject=UGC%20inquiry" translate="no">michellesammonscollab@<wbr>gmail.com</a></p>
+          </div>
+          <p class="note" id="form-note" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><div class="foot">
+    <a class="brand" href="#top" translate="no">Michelle Sammons</a>
+    <div class="foot-links">
+      <a href="mailto:michellesammonscollab@gmail.com" translate="no">michellesammonscollab@<wbr>gmail.com</a>
+      <a href="#top">Back to top</a>
+      <span>&copy; 2026</span>
+    </div>
+  </div></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  document.documentElement.classList.add("js");
+  document.addEventListener("touchstart", function () {}, { passive: true });
+  var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  /* ---------- Nav border once the page scrolls ---------- */
+  var nav = document.getElementById("nav");
+  if ("IntersectionObserver" in window) {
+    var sentinel = document.createElement("div");
+    sentinel.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none";
+    sentinel.setAttribute("aria-hidden", "true");
+    document.body.prepend(sentinel);
+    new IntersectionObserver(function (e) {
+      nav.classList.toggle("is-stuck", !e[0].isIntersecting);
+    }).observe(sentinel);
+  }
+
+  /* ---------- Video players: one at a time, grid clips only on tap or click ---------- */
+  var soundOn = false;
+  var heroHold = false;
+  var current = null;
+  var players = [];
+
+  function label(p) {
+    if (p.el.classList.contains("is-missing")) return;
+    p.hit.setAttribute("aria-pressed", p.el.classList.contains("is-playing") ? "true" : "false");
+  }
+  function loadPoster(p) {
+    var d = p.video.getAttribute("data-poster");
+    if (d) { p.video.setAttribute("poster", d); p.video.removeAttribute("data-poster"); }
+  }
+  function applySound() {
+    players.forEach(function (p) {
+      p.video.muted = !soundOn;
+      p.el.classList.toggle("sound-on", soundOn);
+      if (p.sound) p.sound.setAttribute("aria-label", soundOn ? "Turn sound off" : "Turn sound on");
+    });
+    document.querySelectorAll("[data-sound-toggle]").forEach(function (b) {
+      b.classList.toggle("sound-on", soundOn);
+      var l = b.querySelector("[data-sound-label]");
+      if (l) l.textContent = soundOn ? "Mute" : "Unmute";
+      b.setAttribute("aria-label", soundOn ? "Mute the videos" : "Unmute the Kalshi video");
+    });
+  }
+  function stop(p) {
+    if (!p) return;
+    p.token++;
+    p.auto = false;
+    p.video.pause();
+    p.el.classList.remove("is-playing");
+    label(p);
+    if (current === p) current = null;
+  }
+  function start(p, auto) {
+    if (p.el.classList.contains("is-missing")) return;
+    if (current && current !== p) stop(current);
+    current = p;
+    p.auto = !!auto;
+    var token = ++p.token;
+    loadPoster(p);
+    p.video.muted = !soundOn;
+    p.el.classList.add("is-playing");
+    label(p);
+    var pr;
+    try { pr = p.video.play(); } catch (e) { pr = null; }
+    if (pr && pr.catch) pr.catch(function () {
+      if (token !== p.token || current !== p) return;
+      if (p.video.paused) stop(p);
+    });
+  }
+
+  document.querySelectorAll("[data-player]").forEach(function (el) {
+    var p = {
+      el: el,
+      kind: el.getAttribute("data-player"),
+      name: el.getAttribute("data-name"),
+      video: el.querySelector("video"),
+      hit: el.querySelector(".hit"),
+      sound: el.querySelector(".sound"),
+      token: 0,
+      auto: false
+    };
+    players.push(p);
+    p.hit.setAttribute("aria-label", "Play " + p.name + " video");
+    label(p);
+    var src = p.video.querySelector("source");
+    if (src) src.addEventListener("error", function () {
+      stop(p);
+      p.el.classList.add("is-missing");
+      p.hit.disabled = true;
+      p.hit.removeAttribute("aria-pressed");
+      p.hit.setAttribute("aria-label", p.name + " video is unavailable");
+    });
+    p.video.addEventListener("pause", function () {
+      if (current === p && p.video.paused) stop(p);
+    });
+    p.hit.addEventListener("click", function () {
+      if (p.el.classList.contains("is-playing")) {
+        stop(p);
+        if (p.kind === "hero") heroHold = true;
+      } else {
+        start(p, false);
+      }
+    });
+    if (p.sound) {
+      p.sound.addEventListener("click", function () { soundOn = !soundOn; applySound(); });
+    }
+  });
+  document.querySelectorAll("[data-sound-toggle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      soundOn = !soundOn;
+      applySound();
+      var heroP = players.filter(function (x) { return x.kind === "hero"; })[0];
+      if (soundOn && heroP && current !== heroP) start(heroP, false);
+    });
+  });
+  applySound();
+
+  var heroPlayer = players.filter(function (x) { return x.kind === "hero"; })[0];
+  var heroVisible = false;
+  if ("IntersectionObserver" in window) {
+    var vo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var p = players.filter(function (x) { return x.el === en.target; })[0];
+        if (!p) return;
+        if (p === heroPlayer) { heroVisible = en.isIntersecting; if (!heroVisible) heroHold = false; }
+        if (!en.isIntersecting && current === p) stop(p);
+      });
+      if (heroPlayer && heroVisible && !current && !heroHold && !mqReduce.matches && !document.hidden) start(heroPlayer, true);
+    }, { threshold: 0.35 });
+    players.forEach(function (p) { vo.observe(p.el); });
+    var po = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var p = players.filter(function (x) { return x.el === en.target; })[0];
+        if (p) loadPoster(p);
+        po.unobserve(en.target);
+      });
+    }, { rootMargin: "600px 0px" });
+    players.forEach(function (p) { if (p.video.hasAttribute("data-poster")) po.observe(p.el); });
+  } else {
+    players.forEach(loadPoster);
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden && current) stop(current);
+    else if (!document.hidden && !current && heroVisible && !heroHold && !mqReduce.matches && heroPlayer) start(heroPlayer, true);
+  });
+  var onReduce = function () {
+    if (mqReduce.matches && current && current.auto) stop(current);
+  };
+  if (mqReduce.addEventListener) mqReduce.addEventListener("change", onReduce);
+  else if (mqReduce.addListener) mqReduce.addListener(onReduce);
+
+  /* ---------- Contact: no form backend, so open a pre-filled email ---------- */
+  var TO = "michellesammonscollab@gmail.com";
+  var SUBJECT = "New UGC inquiry from your portfolio site";
+  var form = document.getElementById("contact-form");
+  var email = document.getElementById("f-email");
+  var err = document.getElementById("f-email-error");
+  var note = document.getElementById("form-note");
+  var MAX_HREF = 1899;
+
+  var msgBox = document.getElementById("f-message");
+  var hint = document.getElementById("f-message-hint");
+  var MAX_MSG = 1200;
+  msgBox.addEventListener("input", function () {
+    var left = MAX_MSG - msgBox.value.length;
+    hint.textContent = left > 150 ? "Up to 1,200 characters." : left + (left === 1 ? " character left." : " characters left.");
+    hint.classList.toggle("is-near", left <= 150);
+  });
+
+  email.addEventListener("input", function () {
+    if (email.getAttribute("aria-invalid") === "true" && email.validity.valid) {
+      email.removeAttribute("aria-invalid"); err.textContent = "";
+    }
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!email.value.trim() || !email.validity.valid) {
+      email.setAttribute("aria-invalid", "true");
+      err.textContent = email.value.trim() ? "That email looks incomplete. Try name@brand.com." : "Add your email so I can reply.";
+      email.focus();
+      return;
+    }
+    var name = form.elements.name.value.trim();
+    var msg = form.elements.message.value.trim();
+    var head = (name ? "Name: " + name + "\n" : "") + "Email: " + email.value.trim() + "\n\n";
+    var full = head + msg;
+    var base = "mailto:" + TO + "?subject=" + encodeURIComponent(SUBJECT) + "&body=";
+    var href = base + encodeURIComponent(full);
+    if (href.length <= MAX_HREF) {
+      note.textContent = "Your email app should open with this filled in. Hit send there, or write to " + TO + ".";
+      window.location.href = href;
+      return;
+    }
+    var copied = false;
+    var done = function () {
+      var tail = copied
+        ? "\n\n(message trimmed, full text copied to your clipboard)"
+        : "\n\n(message trimmed to fit the email link)";
+      var chars = Array.from(msg);
+      var cut = msg;
+      while (chars.length && (base + encodeURIComponent(head + cut + "…" + tail)).length > MAX_HREF) {
+        chars = chars.slice(0, Math.max(0, chars.length - Math.max(20, Math.ceil(chars.length * 0.05))));
+        cut = chars.join("");
+      }
+      note.textContent = copied
+        ? "Your message was too long for an email link, so the email opens with a trimmed version. The full text is copied to your clipboard: paste it into the email before you send."
+        : "Your message was too long for an email link, so your email app opens with a shorter version. Copy your full message from the box above, or write to " + TO + ".";
+      window.location.href = base + encodeURIComponent(head + cut + "…" + tail);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      var settled = false;
+      var finish = function (ok) { if (settled) return; settled = true; copied = ok; done(); };
+      navigator.clipboard.writeText(full).then(function () { finish(true); }, function () { finish(false); });
+      setTimeout(function () { finish(false); }, 600);
+    } else {
+      done();
+    }
+  });
+})();
+</script>
+</body>
+</html>

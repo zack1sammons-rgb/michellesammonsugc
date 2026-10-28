@@ -25,7 +25,7 @@
       --field   #857D8C  input borders, 3.9:1 (non-text)
 
     MOTION: none, per Zack's creator-site rule. Everything his site animates is drawn at its resting state:
-      no word rise, no scroll reveals, no count-up, no brand marquee, no reel scroll, no word swap,
+      no word rise, no scroll reveals, no count-up, no reel scroll, no word swap,
       no heart-monitor sweep, no cursor glow, no tilt or grow on play, no hover movement.
       Only color changes on hover and focus. Videos play on tap; the hero autoplays muted with a Pause button.
   */
@@ -188,18 +188,25 @@
     .phone { width: 220px; justify-self: center; }
   }
 
-  /* ---------- Brand bar: one still, wrapped row of names ---------- */
-  .logos { position: relative; border-block: 1px solid var(--line); padding: 28px var(--pad); }
-  .logos-track {
-    display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px 52px; list-style: none;
-  }
+  /* ---------- Brand bar: purple band, names scroll like Zack's marquee (Zack, 10-28: "offset in purple and moving") ---------- */
+  .logos { position: relative; background: var(--accent); padding: 26px 0; overflow: hidden; }
+  .logos::before, .logos::after { content: ""; position: absolute; top: 0; bottom: 0; width: 72px; z-index: 1; pointer-events: none; }
+  .logos::before { left: 0; background: linear-gradient(to right, var(--accent), transparent); }
+  .logos::after { right: 0; background: linear-gradient(to left, var(--accent), transparent); }
+  .logos-track { display: flex; align-items: center; gap: 64px; width: max-content; list-style: none; animation: marquee 32s linear infinite; }
   .logos-track li {
-    font-weight: 900; font-stretch: 118%; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em;
-    color: #3A3046;
+    flex: none; font-weight: 900; font-stretch: 118%; font-size: 26px; line-height: 1.1; letter-spacing: -0.02em;
+    color: #fff; white-space: nowrap;
   }
+  @keyframes marquee { to { transform: translateX(calc(-50% - 32px)); } }
   @media (max-width: 759px) {
-    .logos-track { gap: 14px 32px; }
-    .logos-track li { font-size: 20px; }
+    .logos { padding: 20px 0; }
+    .logos-track { gap: 44px; animation-duration: 26s; }
+    .logos-track li { font-size: 21px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logos-track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; row-gap: 14px; padding: 0 var(--pad); }
+    .logos-track [aria-hidden] { display: none; }
   }
 
   /* ---------- Sections ---------- */
@@ -385,7 +392,7 @@
 
   <div class="logos" id="logos">
     <ul class="logos-track" aria-label="Brands" translate="no">
-      <li>Kalshi</li><li>Gaitor</li><li>DoorDash</li><li>Wonderskin</li><li>Amazon</li><li>Nello</li><li>G2G</li><li>BabeLash</li>
+      <li>Kalshi</li><li>Gaitor</li><li>DoorDash</li><li>Wonderskin</li><li>Amazon</li><li>Nello</li><li>G2G</li><li>BabeLash</li><li aria-hidden="true">Kalshi</li><li aria-hidden="true">Gaitor</li><li aria-hidden="true">DoorDash</li><li aria-hidden="true">Wonderskin</li><li aria-hidden="true">Amazon</li><li aria-hidden="true">Nello</li><li aria-hidden="true">G2G</li><li aria-hidden="true">BabeLash</li>
     </ul>
   </div>
 

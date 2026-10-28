@@ -1,883 +1,587 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<!--
-  Michelle Sammons, UGC portfolio. Built 2026-10-28 from Jaden Johnson's approved calm light site
-  (Alberta/website/light, 2026-10-21), recolored purple and white per Zack.
-
-  TOKENS (contrast measured against --bg unless noted)
-    --bg      #FCFAFE  page background, white with a faint lavender cast
-    --ink     #231A30  text, 16.0:1
-    --muted   #5E5469  secondary text, 6.9:1
-    --purple  #6B3FD0  the one accent: buttons, the italic name, focus rings. 6.2:1 as text; white on it 6.5:1
-    --purple-dk #5A31B8 same hue, hover only. White on it 8.2:1
-    --wash    #F0E9FB  purple tint for the contact panel (ink 14.1:1, purple 5.5:1, muted 6.0:1)
-    --paper   #FFFFFF  inputs and the play chip
-
-  TYPE: Fraunces (display, SOFT 100) over Manrope (body), the pairing on Jaden's approved site, kept so
-    the creator sites match. Emphasis is Fraunces italic, never a second family.
-
-  SHAPE: cards and video frames 20px, panel 28px, buttons and chips full pill, inputs 14px, phone 34-38px.
-
-  MOTION: none (Zack 2026-10-21 rule). No load-in, no scroll reveals, no marquee, no hover lift,
-    no tilt, no parallax. Only color and opacity change on hover/focus.
-    Video: one plays at a time. The hero autoplays muted and loops only while on screen and only
-    without reduced motion, and shows a pause chip while it plays. Grid cards play ONLY on tap
-    and stop on a second tap or when another starts. Off-screen videos pause.
-
-  ICONS: Phosphor (@phosphor-icons/core 2.1.1) paths, inlined.
-  CONTACT: no form backend, so submit opens a pre-filled email to Michelle. Nothing is posted.
--->
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Michelle Sammons | UGC creator</title>
-<meta name="description" content="Michelle Sammons is a UGC creator. Watch her short vertical ads for Kalshi, Gaitor and Wonderskin.">
 <meta name="theme-color" content="#FCFAFE">
 <meta name="color-scheme" content="light">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2716%27 fill=%27%236B3FD0%27/%3E%3C/svg%3E">
-<meta property="og:title" content="Michelle Sammons | UGC creator">
-<meta property="og:description" content="Short vertical UGC ads by Michelle Sammons.">
-<meta property="og:type" content="website">
+<title>Michelle Sammons | UGC creator</title>
+<meta name="description" content="Michelle Sammons makes UGC ads that feel native on your FYP, for brands like Kalshi, DoorDash and Amazon.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%236B3FD0'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@400..700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="assets/videos/posters/kalshi-tuesday-nights.jpg">
 <style>
+  /*
+    Michelle Sammons, UGC portfolio. Built 2026-10-28 as a literal copy of zacksammons.com
+    (UGC/zack-ugc-portfolio 7/index.html): same sections, order, sizes, type and copy, recolored purple and white.
+
+    TOKENS (contrast against --bg #FCFAFE unless noted)
+      --text    #231A30  16.0:1
+      --muted   #5E5469  6.9:1
+      --accent  #6B3FD0  the one accent. 6.2:1 as text; white on it 6.5:1
+      --surface #F1EBFA  video wells before the poster paints
+      --field   #857D8C  input borders, 3.9:1 (non-text)
+
+    MOTION: none, per Zack's creator-site rule. Everything his site animates is drawn at its resting state:
+      no word rise, no scroll reveals, no count-up, no brand marquee, no reel scroll, no word swap,
+      no heart-monitor sweep, no cursor glow, no tilt or grow on play, no hover movement.
+      Only color changes on hover and focus. Videos play on tap; the hero autoplays muted with a Pause button.
+  */
   :root {
     --bg: #FCFAFE;
-    --ink: #231A30;
+    --surface: #F1EBFA;
+    --text: #231A30;
     --muted: #5E5469;
-    --purple: #6B3FD0;
-    --purple-dk: #5A31B8;
-    --wash: #F0E9FB;
-    --paper: #FFFFFF;
-    --line: rgb(35 26 48 / 0.12);
-    --shadow: 0 1px 2px rgb(58 30 120 / 0.08), 0 12px 32px -12px rgb(58 30 120 / 0.3);
-
-    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-
-    --r-card: 20px;
-    --r-panel: 28px;
-    --r-input: 14px;
-
-    --gutter: 16px;
-    --max: 1240px;
+    --line: rgba(35, 26, 48, 0.12);
+    --field: #857D8C;
+    --accent: #6B3FD0;
+    --accent-dk: #5A31B8;
+    --on-accent: #FFFFFF;
+    --device: #231A30;
+    --pad: clamp(20px, 5vw, 72px);
     --nav-h: 64px;
-
-    --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
-    --sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-
-    color-scheme: light;
   }
-  @media (min-width: 768px) { :root { --gutter: 32px; } }
-  @media (min-width: 1200px) { :root { --gutter: 48px; } }
 
-  *, *::before, *::after { box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-    scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 12px);
     background: var(--bg);
+    scroll-padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px) + 12px);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
-  }
-  @media (pointer: fine) { html { overscroll-behavior: none; } }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
   body {
-    margin: 0;
     background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 1rem;
+    color: var(--text);
+    font-family: 'Archivo', system-ui, sans-serif;
+    font-size: 17px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
   }
 
-  img, video, svg { display: block; max-width: 100%; }
-  a { color: inherit; }
-  h1, h2, h3, p, figure, ul { margin: 0; }
-  ul { padding: 0; list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  img, video { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  button, a, .btn { touch-action: manipulation; }
+  button, .btn { user-select: none; -webkit-user-select: none; }
 
-  .wrap {
-    width: 100%;
-    max-width: calc(var(--max) + var(--gutter) * 2);
-    margin-inline: auto;
-    padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+  .display {
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: -0.025em;
+    line-height: 1.04;
+    text-wrap: balance;
   }
+  .display em { font-style: italic; color: var(--accent); }
 
+  .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .skip {
-    position: absolute; left: 12px; top: -48px; z-index: 30;
-    background: var(--ink); color: var(--bg);
-    padding: 10px 16px; border-radius: 999px; text-decoration: none; font-weight: 600;
+    position: fixed; top: 12px; left: 12px; z-index: 20; padding: 10px 16px; border-radius: 999px;
+    background: var(--text); color: var(--bg); font-weight: 700; font-size: 14px;
+    transform: translateY(-160%);
   }
-  .skip:focus-visible { top: calc(12px + env(safe-area-inset-top, 0px)); }
+  .skip:focus-visible { transform: none; }
 
-  :focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
-
-  button, .btn, .nav a {
-    touch-action: manipulation;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  button { font: inherit; color: inherit; }
-
+  /* ---------- Buttons ---------- */
   .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    min-height: 48px; padding: 0 24px;
-    border-radius: 999px; border: 1px solid transparent;
-    font-weight: 650; font-size: 1rem; line-height: 1; text-decoration: none; white-space: nowrap;
-    cursor: pointer;
-    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    height: 48px; padding: 0 24px; border-radius: 999px;
+    font-weight: 700; font-size: 15px; letter-spacing: 0.005em;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
   }
-  .btn svg { width: 18px; height: 18px; flex-shrink: 0; }
-  .btn-primary { background: var(--purple); color: #fff; }
-  .btn-ghost { background: transparent; color: var(--ink); border-color: rgb(35 26 48 / 0.28); }
+  .btn-accent { background: var(--accent); color: var(--on-accent); }
+  .btn-ghost { border: 1.5px solid rgba(35, 26, 48, 0.4); color: var(--text); }
   @media (hover: hover) and (pointer: fine) {
-    .btn-primary:hover { background: var(--purple-dk); }
-    .btn-ghost:hover { border-color: var(--purple); color: var(--purple); }
+    .btn-accent:hover { background: var(--accent-dk); }
+    .btn-ghost:hover { border-color: var(--text); background: var(--text); color: var(--bg); }
   }
 
   /* ---------- Nav ---------- */
   .nav {
-    position: sticky; top: 0; z-index: 20;
-    padding-top: env(safe-area-inset-top, 0px);
-    background: rgb(252 250 254 / 0.86);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    backdrop-filter: blur(14px) saturate(140%);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) var(--pad) 0;
+    display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid transparent;
-    transition: border-color 200ms ease;
+    transition: background-color 200ms ease, border-color 200ms ease;
   }
-  .nav.is-stuck { border-bottom-color: var(--line); }
-  @media (prefers-reduced-transparency: reduce) { .nav { background: var(--bg); } }
-  .nav-inner { height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .brand {
-    display: inline-flex; align-items: center; min-height: 44px;
-    font-family: var(--serif); font-variation-settings: "SOFT" 100;
-    font-size: 1.3rem; font-weight: 560; letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
-  }
-  .nav-links { display: none; gap: 28px; font-weight: 600; font-size: 0.95rem; }
-  .nav-links a { text-decoration: none; color: var(--muted); padding: 8px 0; transition: color 200ms ease; }
-  @media (hover: hover) and (pointer: fine) { .nav-links a:hover { color: var(--ink); } }
-  .nav-right { display: flex; align-items: center; gap: 28px; }
-  .nav .btn { min-height: 44px; padding: 0 18px; font-size: 0.95rem; }
-  @media (min-width: 720px) { .nav-links { display: flex; } }
-  /* The full name is longer than Jaden's: below 380px the name and button shrink so the bar fits at 320px */
-  @media (max-width: 379px) {
-    .brand { font-size: 1.1rem; }
-    .nav .btn { padding: 0 14px; font-size: 0.875rem; }
-  }
+  .nav.solid { background: rgba(252, 250, 254, 0.86); border-color: var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .logo { font-weight: 900; font-stretch: 118%; font-size: 17px; letter-spacing: -0.01em; white-space: nowrap; }
+  @media (max-width: 400px) { .logo { font-size: 15px; } }
+  .logo span { color: var(--accent); }
+  .nav .btn { height: 40px; padding: 0 18px; font-size: 14px; }
+
+  main > section[id] { scroll-margin-top: calc(-1 * (var(--nav-h) + env(safe-area-inset-top, 0px) + 12px) - 3px); }
 
   /* ---------- Hero ---------- */
-  .hero { overflow-x: clip; }
-  .hero-inner {
-    display: grid; gap: 24px;
-    padding-top: 16px; padding-bottom: 16px;
+  .hero {
+    position: relative; isolation: isolate; overflow: hidden;
+    min-height: 100svh;
+    padding: calc(var(--nav-h) + 56px) var(--pad) 72px;
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(32px, 6vw, 96px);
   }
-  .eyebrow { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
-  .hero h1 {
-    margin-top: 8px;
-    font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
-    font-weight: 420;
-    font-size: clamp(2.6rem, 11.5vw, 4.6rem);
-    line-height: 1.04; letter-spacing: -0.025em;
-    padding-bottom: 4px;
-    text-wrap: balance;
+  /* Dot field, static. The hero has the full field; Contact gets a quieter patch of it. */
+  .dots {
+    position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background-size: 26px 26px; background-position: 13px 13px;
+    background-image: radial-gradient(rgba(35, 26, 48, 0.16) 1.2px, transparent 1.7px);
   }
-  .hero h1 em { font-style: italic; font-weight: 400; color: var(--purple); }
-  .hero-sub { margin-top: 16px; font-size: 1.0625rem; line-height: 1.55; color: var(--muted); max-width: 40ch; text-wrap: pretty; }
-  .hero-ctas { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; }
-  .sound-toggle { padding: 0 20px; }
+  .hero .dots {
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+            mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  }
+  .contact .dots {
+    -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 75%);
+            mask-image: linear-gradient(to top, #000 10%, transparent 75%);
+  }
 
-  .stage { position: relative; display: grid; justify-items: center; align-content: start; }
-  .phone-wrap { position: relative; display: grid; justify-items: center; }
-  .phone-wrap::before {
-    content: ""; position: absolute; z-index: 0;
-    width: 124%; aspect-ratio: 1; border-radius: 50%;
-    background: var(--purple); opacity: 0.9;
-    top: 50%; left: 50%; translate: -50% -54%;
-  }
+  .hero h1 { font-size: clamp(38px, 4.6vw, 68px); }
+  .hero h1 .line { display: inline; }
+  @media (min-width: 760px) { .hero h1 .line { display: block; white-space: nowrap; } }
+
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+  /* Phone: the Kalshi ad plays muted on its own. Tap the screen for sound; Pause stops it. */
   .phone {
-    position: relative; z-index: 1;
-    width: 200px;
-    padding: 8px; border-radius: 34px;
-    background: var(--ink);
-    box-shadow: 0 2px 4px rgb(35 26 48 / 0.18), 0 30px 60px -20px rgb(58 30 120 / 0.55);
+    position: relative; display: block;
+    width: 272px; aspect-ratio: 9 / 18.6; padding: 10px; border-radius: 42px;
+    background: var(--device); border: 1px solid var(--line);
+    box-shadow: 0 50px 90px -30px rgba(58, 30, 120, 0.45);
+    transform: rotate(3deg);
   }
-  .phone .media { border-radius: 26px; }
-  .phone .island {
-    position: absolute; z-index: 3; top: 16px; left: 50%; translate: -50% 0;
-    width: 30%; height: 16px; border-radius: 999px; background: var(--ink); pointer-events: none;
+  .phone::before {
+    content: ''; position: absolute; top: 20px; left: 50%; z-index: 3;
+    width: 74px; height: 20px; margin-left: -37px; border-radius: 20px; background: var(--device);
   }
-  .stage-meta {
-    position: relative; z-index: 1; margin-top: 16px;
-    font-size: 0.875rem; line-height: 1.35; color: var(--muted); text-align: center;
+  .screen { display: block; position: relative; height: 100%; border-radius: 32px; overflow: hidden; background: #0B0B0C; }
+  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .screen-hit { position: absolute; inset: 0; border-radius: 32px; }
+  .play {
+    position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%;
+    display: grid; place-items: center; background: rgba(35, 26, 48, 0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    font-size: 18px; color: #fff; pointer-events: none; transition: background-color 150ms ease;
   }
-  .stage-meta strong { color: var(--ink); font-weight: 650; }
-
-  /* Phones from 370px: name on top, then copy and buttons beside a smaller phone */
-  @media (min-width: 370px) and (max-width: 899px) {
-    .hero-inner {
-      grid-template-columns: minmax(0, 1fr) auto;
-      grid-template-areas: "e e" "h h" "s p" "c p" ". p";
-      grid-template-rows: auto auto auto auto 1fr;
-      column-gap: 14px; row-gap: 0;
-    }
-    .hero-copy { display: contents; }
-    .eyebrow { grid-area: e; }
-    .hero h1 { grid-area: h; }
-    .hero-sub { grid-area: s; margin-top: 16px; font-size: 1rem; line-height: 1.5; }
-    .hero-ctas { grid-area: c; margin-top: 16px; flex-direction: column; align-items: flex-start; gap: 10px; }
-    .stage { grid-area: p; margin-top: 20px; }
-    .phone { width: clamp(150px, 40vw, 240px); padding: 7px; border-radius: 28px; }
-    .phone .media { border-radius: 21px; }
-    .phone .island { top: 13px; height: 13px; }
-    .stage-meta { margin-top: 12px; font-size: 0.8125rem; max-width: 18ch; }
+  .phone.playing .play { display: none; }
+  .phone-ctrls {
+    position: absolute; left: 12px; right: 12px; bottom: 14px; z-index: 2;
+    display: flex; justify-content: space-between; gap: 8px;
   }
-
-  @media (min-width: 900px) {
-    .hero-inner {
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-      align-items: center; gap: 48px;
-      padding-top: 28px; padding-bottom: 8px;
-    }
-    .hero h1 { font-size: clamp(3.4rem, 6.4vw, 5.5rem); }
-    .hero-sub { font-size: 1.1875rem; margin-top: 18px; }
-    .phone { width: 220px; padding: 9px; border-radius: 38px; }
-    .phone .media { border-radius: 29px; }
-    .phone .island { top: 18px; height: 18px; }
-    .phone-wrap::before { width: 172%; max-width: 420px; }
-  }
-
-  /* ---------- Shared video player ---------- */
-  .media {
-    position: relative; overflow: hidden; isolation: isolate;
-    aspect-ratio: 9 / 16;
-    border-radius: var(--r-card);
-    background: #E7DFF3;
-  }
-  .media video { width: 100%; height: 100%; object-fit: cover; }
-  .media .hit {
-    position: absolute; inset: 0; z-index: 1;
-    border: 0; padding: 0; margin: 0; background: transparent; cursor: pointer;
-    border-radius: inherit;
-  }
-  .media .hit:focus-visible { outline-offset: -3px; outline-width: 3px; }
   .chip {
-    position: absolute; z-index: 2; pointer-events: none;
-    left: 12px; bottom: 12px;
-    width: 44px; height: 44px; border-radius: 999px;
-    display: grid; place-items: center;
-    background: rgb(255 255 255 / 0.94); color: var(--ink);
-    box-shadow: 0 4px 14px -4px rgb(35 26 48 / 0.4);
+    min-height: 34px; padding: 0 14px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700; color: #fff;
+    background: rgba(35, 26, 48, 0.62); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    transition: background-color 150ms ease;
   }
-  .chip svg { width: 18px; height: 18px; }
-  .chip .i-pause { display: none; }
-  .is-playing .chip .i-play { display: none; }
-  .is-playing .chip .i-pause { display: block; }
-  .phone .chip { left: 10px; bottom: 10px; width: 40px; height: 40px; }
-  .phone .chip svg { width: 16px; height: 16px; }
-  .is-missing .chip, .is-missing .sound { display: none; }
-  .is-missing .hit { cursor: default; }
-  .sound {
-    position: absolute; z-index: 2; right: 10px; bottom: 10px;
-    width: 44px; height: 44px; border-radius: 999px; border: 0; padding: 0;
-    display: grid; place-items: center; cursor: pointer;
-    background: rgb(35 26 48 / 0.72); color: #fff;
-    opacity: 0; visibility: hidden;
-    transition: opacity 180ms var(--ease-out), visibility 0s linear 180ms;
+  .chip:focus-visible { outline-color: #fff; }
+  @media (hover: hover) and (pointer: fine) { .chip:hover { background: rgba(35, 26, 48, 0.85); } }
+
+  @media (max-width: 759px) {
+    .hero { grid-template-columns: 1fr; align-content: start; gap: 48px; padding-top: calc(var(--nav-h) + 40px); }
+    .phone { width: 220px; justify-self: center; }
   }
-  .sound svg { width: 20px; height: 20px; }
-  .sound .i-on { display: none; }
-  .sound-on .sound .i-on { display: block; }
-  .sound-on .sound .i-off { display: none; }
-  .is-playing .sound { opacity: 1; visibility: visible; transition-delay: 0s; }
-  .sound-ic { display: inline-flex; }
-  .sound-toggle .i-on { display: none; }
-  .sound-toggle.sound-on .i-on { display: block; }
-  .sound-toggle.sound-on .i-off { display: none; }
-  .phone .sound { display: none; }
+
+  /* ---------- Brand bar: one still, wrapped row of names ---------- */
+  .logos { position: relative; border-block: 1px solid var(--line); padding: 28px var(--pad); }
+  .logos-track {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px 52px; list-style: none;
+  }
+  .logos-track li {
+    font-weight: 900; font-stretch: 118%; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em;
+    color: #3A3046;
+  }
+  @media (max-width: 759px) {
+    .logos-track { gap: 14px 32px; }
+    .logos-track li { font-size: 20px; }
+  }
 
   /* ---------- Sections ---------- */
-  .section { padding-block: 56px; }
-  @media (min-width: 900px) { .section { padding-block: 80px; } }
-  .h2 {
-    font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
-    font-weight: 430; font-size: clamp(2.3rem, 7vw, 3.75rem);
-    line-height: 1.06; letter-spacing: -0.022em; text-wrap: balance;
-  }
-  .h2 em { font-style: italic; font-weight: 400; color: var(--purple); }
-  .lede { margin-top: 12px; color: var(--muted); font-size: 1.0625rem; max-width: 52ch; text-wrap: pretty; }
+  .section { padding: clamp(80px, 11vw, 140px) var(--pad); }
+  .section h2 { font-size: clamp(34px, 4.6vw, 64px); }
 
-  /* ---------- Work grid ---------- */
-  .section.work { padding-top: 8px; padding-bottom: 48px; }
-  @media (min-width: 900px) { .section.work { padding-top: 12px; padding-bottom: 64px; } }
-  .work .lede { margin-top: 6px; }
-  .work-head { display: grid; gap: 8px; }
-  @media (min-width: 900px) {
-    .work-head { grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: 40px; }
-    .work-head .lede { margin: 0 0 0 auto; text-align: right; max-width: 44ch; padding-bottom: 8px; }
+  .media { position: relative; }
+  .media-play { position: absolute; inset: 0; border-radius: 18px; }
+  .media-play[hidden] { display: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .media-play:hover .play, .clip-btn:hover .play { background: rgba(35, 26, 48, 0.75); }
+  }
+  .about-video video {
+    width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 18px; background: var(--surface);
   }
 
-  .grid {
-    --offset: 40px;
-    margin-top: 16px;
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 12px; row-gap: 24px;
-    padding-bottom: var(--offset);
+  /* ---------- Work: the page's one colour block ----------
+     One line of type, then the clips. Nothing moves until a clip is tapped; tapping plays it with sound. */
+  .work {
+    position: relative; overflow: hidden;
+    background: var(--accent); color: var(--on-accent);
+    padding: clamp(64px, 8vw, 104px) var(--pad) clamp(28px, 3.5vw, 44px);
   }
-  .grid > li:nth-child(2n) { translate: 0 var(--offset); }
-  /* Two columns and an odd count: the last card sits centered on its own row */
-  @media (max-width: 767px) {
-    .grid > li:last-child:nth-child(odd) {
-      grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px);
-      translate: 0 var(--offset);
-    }
+  .work :focus-visible { outline-color: var(--on-accent); }
+  .band-head {
+    display: flex; justify-content: center; align-items: center; gap: 0.26em;
+    white-space: nowrap; line-height: 1; letter-spacing: -0.03em;
+    font-size: clamp(18px, 4.7vw, 68px);
+    margin-bottom: clamp(36px, 4.5vw, 60px);
   }
-  @media (min-width: 768px) and (max-width: 1099px) {
-    .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 20px; row-gap: 32px; --offset: 56px; margin-top: 28px; }
-    .grid > li:nth-child(2n) { translate: none; }
-    .grid > li:nth-child(3n+2) { translate: 0 var(--offset); }
-    /* A lone last card sits in the middle column */
-    .grid > li:last-child:nth-child(3n+1) { grid-column: 2; translate: 0 var(--offset); }
+  .band-every { font-weight: 900; font-stretch: 125%; }
+  .band-swap {
+    display: inline-block; line-height: 1.08;
+    font-weight: 900; font-stretch: 125%;
+    color: transparent; -webkit-text-stroke: clamp(1px, 0.11vw, 1.8px) var(--on-accent);
   }
-  @media (min-width: 1100px) {
-    .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 24px; row-gap: 32px; --offset: 48px; margin-top: 28px; }
-    .grid > li:nth-child(2n) { translate: none; }
-    .grid > li:nth-child(5n+2), .grid > li:nth-child(5n+4) { translate: 0 var(--offset); }
+  .band-purpose { font-style: italic; font-weight: 800; font-stretch: 100%; padding-bottom: 0.06em; }
+
+  /* His row scrolls itself; here it holds still and you swipe or scroll it. Same row, same card size, same edge fades. */
+  .reel-wrap { position: relative; margin-inline: calc(var(--pad) * -1); }
+  .reel-wrap::before, .reel-wrap::after {
+    content: ''; position: absolute; top: 0; bottom: 0; width: clamp(24px, 5vw, 80px); z-index: 1; pointer-events: none;
+  }
+  .reel-wrap::before { left: 0; background: linear-gradient(to right, var(--accent), transparent); }
+  .reel-wrap::after { right: 0; background: linear-gradient(to left, var(--accent), transparent); }
+  .reel {
+    display: flex; gap: 16px; list-style: none;
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+    padding: 0 clamp(24px, 5vw, 80px) 6px; scroll-padding-inline: clamp(24px, 5vw, 80px);
+    scrollbar-width: none;
+  }
+  .reel::-webkit-scrollbar { display: none; }
+  .reel li { flex: none; width: clamp(150px, 15vw, 220px); scroll-snap-align: start; }
+  .clip { position: relative; }
+  .clip video {
+    width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 18px; background: var(--surface);
+    outline: 3px solid transparent; outline-offset: 3px; transition: outline-color 150ms ease;
+  }
+  .clip.active video { outline-color: var(--on-accent); }
+  .clip-btn { position: absolute; left: 0; right: 0; top: 0; aspect-ratio: 9 / 16; border-radius: 18px; }
+  .clip-btn .play { width: 48px; height: 48px; margin: -24px 0 0 -24px; font-size: 15px; }
+  .clip.active .play { display: none; }
+  .clip figcaption { margin-top: 10px; font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.9); }
+
+  /* About: one row on laptop and up (text, results, video). Stacks only below 860px. */
+  .about, .contact { position: relative; isolation: isolate; overflow: hidden; }
+  /* The heart-monitor line behind About, drawn still */
+  .ecg {
+    position: absolute; left: 0; width: 100%; top: 50%; height: clamp(120px, 14vw, 200px);
+    transform: translateY(-50%); z-index: -1; pointer-events: none; overflow: visible;
+  }
+  .ecg path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0.14; }
+
+  .about-row {
+    display: grid; align-items: center; gap: clamp(32px, 4vw, 64px);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.7fr) minmax(0, 0.75fr);
+  }
+  .about-copy .lead { font-size: clamp(19px, 1.6vw, 23px); line-height: 1.45; margin-top: 24px; max-width: 34ch; }
+  .about-copy .pitch { font-size: clamp(19px, 1.6vw, 23px); line-height: 1.45; font-weight: 700; margin-top: 20px; max-width: 34ch; }
+  .about-copy .body { color: var(--muted); margin-top: 20px; max-width: 52ch; }
+  .stats { display: grid; gap: 36px; }
+  .stat { border-top: 1px solid var(--line); padding-top: 18px; }
+  .stat-num { font-weight: 800; font-stretch: 112%; font-size: clamp(44px, 4.4vw, 68px); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .stat-num em { font-style: normal; color: var(--accent); }
+  .stat-label { margin-top: 10px; font-size: 13px; color: var(--muted); letter-spacing: 0.02em; }
+  .about-video .media {
+    max-width: 320px; margin-left: auto; padding: 8px; border-radius: 30px;
+    background: var(--device); border: 1px solid var(--line);
+    box-shadow: 0 40px 80px -30px rgba(58, 30, 120, 0.45);
+    transform: rotate(-3deg);
+  }
+  .about-video video { border-radius: 22px; }
+  .about-video .media-play { inset: 8px; border-radius: 22px; }
+  @media (max-width: 859px) {
+    .about-row { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .stat-num { font-size: clamp(32px, 9.6vw, 56px); }
+    .about-video .media { margin: 0 auto; }
   }
 
-  .card .media { box-shadow: var(--shadow); }
-  .card figcaption {
-    margin-top: 12px; font-weight: 650; font-size: 0.95rem; line-height: 1.3;
-    overflow-wrap: anywhere;
+  /* Contact */
+  .contact { border-top: 1px solid var(--line); }
+  .contact::after {
+    content: ''; position: absolute; z-index: -2; pointer-events: none;
+    left: 50%; bottom: -55%; width: 140%; height: 100%; transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(107, 63, 208, 0.16), transparent);
   }
-  .card figcaption b { font-weight: 650; }
-  .card figcaption span { display: block; margin-top: 2px; font-weight: 500; color: var(--muted); }
+  .form-card {
+    padding: clamp(20px, 3vw, 32px); border-radius: 18px;
+    background: rgba(255, 255, 255, 0.86); border: 1px solid var(--line);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .form-card input, .form-card textarea { background: var(--bg); }
+  .contact h2 { max-width: 20ch; }
+  .contact-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); margin-top: 48px; align-items: start; }
+  .contact .sub { color: var(--muted); }
+  form { display: grid; gap: 18px; margin-top: 24px; max-width: 520px; }
+  .field { display: grid; gap: 8px; }
+  label { font-size: 14px; font-weight: 600; }
+  input, textarea {
+    width: 100%; font: inherit; font-size: 16px; color: var(--text);
+    background: #fff; border: 1px solid var(--field); border-radius: 12px;
+    padding: 14px 16px; transition: border-color 150ms ease;
+  }
+  input::placeholder, textarea::placeholder { color: #6E6677; }
+  input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  textarea { resize: vertical; min-height: 120px; }
+  form .btn { justify-self: start; border: 0; }
+  .form-note { font-size: 15px; font-weight: 600; }
+  .form-note:empty { margin-top: -18px; }
+  .email-label { font-size: 15px; color: var(--muted); }
+  .email-link {
+    display: inline-block; margin-top: 10px; font-weight: 800; font-stretch: 110%;
+    font-size: clamp(20px, 2.2vw, 28px); overflow-wrap: anywhere;
+    border-bottom: 2px solid var(--accent); padding-bottom: 4px;
+    transition: color 150ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) { .email-link:hover { color: var(--accent); } }
+  @media (max-width: 759px) { .contact-grid { grid-template-columns: 1fr; } }
 
-  /* ---------- Brands ---------- */
-  .brands-label { font-size: 0.9rem; font-weight: 600; color: var(--muted); }
-  .brand-list {
-    margin-top: 14px;
-    display: flex; flex-wrap: wrap; justify-content: center;
-    border-block: 1px solid var(--line);
+  footer {
+    padding: 28px var(--pad) calc(28px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px;
+    font-size: 14px; color: var(--muted);
   }
-  .brand-list li {
-    font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
-    font-size: clamp(1.75rem, 5vw, 2.4rem); font-weight: 450; letter-spacing: -0.01em;
-    padding: 12px 18px; overflow-wrap: anywhere;
-  }
-  .brand-list li:nth-child(3n+2) { font-style: italic; color: var(--purple); }
-  .brand-list { padding-block: 6px; }
-
-  /* ---------- About ---------- */
-  .about-inner { display: grid; gap: 20px; }
-  .about-copy p { font-size: 1.1875rem; max-width: 44ch; color: var(--muted); text-wrap: pretty; }
-  .about-copy .btn { margin-top: 28px; }
-  @media (min-width: 900px) {
-    .about-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 72px; align-items: start; }
-    .about-copy p { font-size: 1.3125rem; padding-top: 14px; }
-  }
-
-  /* ---------- Contact ---------- */
-  .section.contact { padding-top: 0; }
-  .panel {
-    background: var(--wash);
-    border-radius: var(--r-panel);
-    padding: 32px 20px;
-  }
-  @media (min-width: 768px) { .panel { padding: 56px; } }
-  @media (min-width: 1100px) { .panel { padding: 72px 80px; } }
-  .contact .h2 { max-width: 15ch; }
-  @media (min-width: 1100px) {
-    .panel { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 64px; align-items: start; }
-    .panel form { margin-top: 0; }
-    .contact .h2 { max-width: 12ch; }
-  }
-  .contact .h2 em { display: block; padding-bottom: 4px; }
-  .contact .lede { color: var(--muted); }
-
-  form { margin-top: 32px; display: grid; gap: 20px; }
-  .row { display: grid; gap: 20px; }
-  @media (min-width: 768px) { .row { grid-template-columns: 1fr 1fr; } }
-  .field { display: grid; gap: 8px; align-content: start; }
-  .field label { font-weight: 650; font-size: 0.95rem; }
-  .field label .opt { font-weight: 500; color: var(--muted); }
-  .field input, .field textarea {
-    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
-    background: var(--paper);
-    border: 1px solid rgb(35 26 48 / 0.2); border-radius: var(--r-input);
-    padding: 13px 16px; min-height: 50px;
-    transition: border-color 160ms ease;
-  }
-  .field textarea { min-height: 140px; resize: vertical; line-height: 1.5; }
-  .field input::placeholder, .field textarea::placeholder { color: #766C82; opacity: 1; }
-  .field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; border-color: transparent; }
-  .field input[aria-invalid="true"] { border-color: #B4233C; }
-  .error { min-height: 1.4em; font-size: 0.9rem; font-weight: 600; color: #B4233C; }
-  .error:empty { min-height: 0; }
-  .form-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-  .form-foot .alt { font-size: 0.95rem; color: var(--muted); }
-  .form-foot .alt a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 650; color: var(--purple); text-underline-offset: 3px; overflow-wrap: anywhere; }
-  .hint { font-size: 0.875rem; color: var(--muted); }
-  .hint.is-near { color: #B4233C; font-weight: 600; }
-  .note { font-size: 0.95rem; font-weight: 600; min-height: 1.5em; }
-  .note:empty { min-height: 0; }
-
-  /* ---------- Footer ---------- */
-  footer { padding-block: 0 calc(40px + env(safe-area-inset-bottom, 0px)); }
-  .foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; border-top: 1px solid var(--line); padding-top: 28px; }
-  .foot .brand { font-size: 1.15rem; }
-  .foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; font-size: 0.95rem; color: var(--muted); }
-  .foot-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--muted); text-underline-offset: 3px; overflow-wrap: anywhere; transition: color 200ms ease; }
-  @media (hover: hover) and (pointer: fine) { .foot-links a:hover { color: var(--purple); } }
+  footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  footer a { overflow-wrap: anywhere; }
+  @media (hover: hover) and (pointer: fine) { footer a { transition: color 150ms ease; } footer a:hover { color: var(--text); } }
 </style>
 </head>
 <body>
-<a class="skip" href="#work">Skip to the videos</a>
+
+<a class="skip" href="#work">Skip to my work</a>
 
 <header class="nav" id="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top" translate="no">Michelle Sammons</a>
-    <div class="nav-right">
-      <nav class="nav-links" aria-label="Sections">
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <a class="btn btn-primary" href="#contact">Work with me</a>
-    </div>
-  </div>
+  <a href="#hero" class="logo" translate="no" aria-label="Michelle Sammons, back to top">MICHELLE SAMMONS<span>.</span></a>
+  <a href="#contact" class="btn btn-ghost">Work with me</a>
 </header>
 
-<main id="top">
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="wrap hero-inner">
-      <div class="hero-copy">
-        <p class="eyebrow">UGC creator</p>
-        <h1 id="hero-title" translate="no">Michelle <em>Sammons</em></h1>
-        <p class="hero-sub">I make short vertical ads that play like content, not commercials.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="#work">See the work
-            <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M205.66,149.66l-72,72a8,8,0,0,1-11.32,0l-72-72a8,8,0,0,1,11.32-11.32L120,196.69V40a8,8,0,0,1,16,0V196.69l58.34-58.35a8,8,0,0,1,11.32,11.32Z"/></svg>
-          </a>
-          <button class="btn btn-ghost sound-toggle" type="button" data-sound-toggle aria-label="Unmute the Kalshi video">
-            <span class="sound-ic" aria-hidden="true"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></span>
-            <span data-sound-label>Unmute</span>
-          </button>
-        </div>
+<main>
+  <section class="hero" id="hero">
+    <div class="dots" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <h1 class="display"><span class="line">I make brands feel</span> <span class="line"><em>native</em> on your FYP.</span></h1>
+      <div class="hero-ctas">
+        <a href="#about" class="btn btn-accent">See why it works <span aria-hidden="true">↓</span></a>
+        <a href="#contact" class="btn btn-ghost">Work with me</a>
       </div>
-
-      <div class="stage">
-        <div class="phone-wrap"><div class="phone">
-          <span class="island" aria-hidden="true"></span>
-          <div class="media" data-player="hero" data-name="Kalshi">
-  <video muted playsinline loop preload="none" poster="assets/videos/posters/kalshi-tuesday-nights.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-tuesday-nights.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-        </div></div>
-        <p class="stage-meta"><strong translate="no">Kalshi</strong>, Love Island watch night</p>
-      </div>
+    </div>
+    <div class="phone" id="phone">
+      <span class="screen">
+        <video id="phoneVideo" muted loop playsinline preload="none" poster="assets/videos/posters/kalshi-tuesday-nights.jpg" src="assets/videos/kalshi-tuesday-nights.mp4" width="1080" height="1920"></video>
+        <button class="screen-hit" id="phoneHit" type="button" aria-label="Play the Kalshi ad"></button>
+        <span class="play" aria-hidden="true">▶</span>
+        <span class="phone-ctrls">
+          <button class="chip" id="heroPause" type="button">Pause</button>
+          <button class="chip" id="heroSound" type="button" aria-pressed="false">Sound on</button>
+        </span>
+      </span>
     </div>
   </section>
 
-  <section class="section work" id="work" aria-labelledby="work-title">
-    <div class="wrap">
-      <div class="work-head">
-        <h2 class="h2" id="work-title">Past work</h2>
-        <p class="lede">Tap any video to play it, and tap again to stop. Sound stays off until you turn it on.</p>
-      </div>
-      <ul class="grid">
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Kalshi, Love Island, car selfie">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-car-promise.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-car-promise.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Love Island, car selfie video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Kalshi</b><span>Love Island, car selfie</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Lip liner, Overlining at home">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/lip-liner-overline-at-home.jpg" width="576" height="1024" aria-hidden="true"><source src="assets/videos/lip-liner-overline-at-home.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Lip liner, Overlining at home video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Lip liner</b><span>Overlining at home</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Kalshi, Dancing With The Stars trend">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-dancing-with-the-stars.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-dancing-with-the-stars.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Dancing With The Stars trend video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Kalshi</b><span>Dancing With The Stars trend</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Kalshi, Love Island, to camera">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-reality-tv.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-reality-tv.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Love Island, to camera video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Kalshi</b><span>Love Island, to camera</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Gaitor, Using it to solve my problems">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/gaitor-solve-my-problems.jpg" width="576" height="1024" aria-hidden="true"><source src="assets/videos/gaitor-solve-my-problems.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Gaitor, Using it to solve my problems video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Gaitor</b><span>Using it to solve my problems</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Lip liner, Undetectable overline, in the car">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/lip-liner-undetectable-car.jpg" width="576" height="1024" aria-hidden="true"><source src="assets/videos/lip-liner-undetectable-car.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Lip liner, Undetectable overline, in the car video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Lip liner</b><span>Undetectable overline, in the car</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Kalshi, Sportsbook payout comparison">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-sportsbooks.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-sportsbooks.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Sportsbook payout comparison video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Kalshi</b><span>Sportsbook payout comparison</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Kalshi, Love Island, POV celebration">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-faith-in-kenzie.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-faith-in-kenzie.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Love Island, POV celebration video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Kalshi</b><span>Love Island, POV celebration</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Gaitor, Comparing AI answers">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/gaitor-compares-ai.jpg" width="576" height="1024" aria-hidden="true"><source src="assets/videos/gaitor-compares-ai.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Gaitor, Comparing AI answers video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Gaitor</b><span>Comparing AI answers</span></figcaption>
-        </figure></li>
-        <li><figure class="card">
-          <div class="media" data-player="card" data-name="Wonderskin, Comparing two liner shades">
-  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/wonderskin-liner-shades.jpg" width="720" height="1280" aria-hidden="true"><source src="assets/videos/wonderskin-liner-shades.mp4" type="video/mp4"></video>
-  <button class="hit" type="button" aria-pressed="false" aria-label="Play Wonderskin, Comparing two liner shades video"></button>
-  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
-  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
-</div>
-          <figcaption><b translate="no">Wonderskin</b><span>Comparing two liner shades</span></figcaption>
-        </figure></li>
-      </ul>
-    </div>
-  </section>
+  <div class="logos" id="logos">
+    <ul class="logos-track" aria-label="Brands" translate="no">
+      <li>Kalshi</li><li>Gaitor</li><li>DoorDash</li><li>Wonderskin</li><li>Amazon</li><li>Nello</li><li>G2G</li><li>BabeLash</li>
+    </ul>
+  </div>
 
-  <section class="brands" aria-labelledby="brands-title">
-    <div class="wrap">
-      <h2 class="brands-label" id="brands-title">Brands I’ve worked with</h2>
-      <ul class="brand-list" translate="no">
-        <li>Kalshi</li><li>Gaitor</li><li>DoorDash</li><li>Wonderskin</li><li>Amazon</li><li>Nello</li><li>G2G</li><li>BabeLash</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section about" id="about" aria-labelledby="about-title">
-    <div class="wrap about-inner">
-      <h2 class="h2" id="about-title">Hey, I’m <em>Michelle.</em></h2>
+  <section class="section about" id="about">
+    <svg class="ecg" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 110H70L78 103L86 103L94 110H120L128 120L138 28L148 152L156 110H190L205 94L222 94L236 110H300H370L378 103L386 103L394 110H420L428 120L438 28L448 152L456 110H490L505 94L522 94L536 110H600H670L678 103L686 103L694 110H720L728 120L738 28L748 152L756 110H790L805 94L822 94L836 110H900H970L978 103L986 103L994 110H1020L1028 120L1038 28L1048 152L1056 110H1090L1105 94L1122 94L1136 110H1200"/></svg>
+    <div class="about-row">
       <div class="about-copy">
-        <p>I’m a UGC creator. I film short vertical ads that feel like something a friend would post.</p>
-        <a class="btn btn-primary" href="#contact">Work with me</a>
+        <h2 class="display">Most UGC ads are dying.</h2>
+        <p class="lead">We’ve all built internal ad blockers. We skip. We scroll. We zone out. Snap creatives are outperforming everything.</p>
+        <p class="pitch">Let me build an ad for you that doesn’t feel like an ad (but still sells like crazy):</p>
+        <p class="body">I make ads that perform because people watch it for entertainment, but relate to a problem and are given the best fix (your product). This works for big brands like Amazon, DoorDash, and even Kalshi.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Brands Worked With</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">11</div>
+          <div class="stat-label">Ads On This Page</div>
+        </div>
+      </div>
+      <div class="about-video">
+        <div class="media"><video preload="none" playsinline poster="assets/videos/posters/gaitor-solve-my-problems.jpg" src="assets/videos/gaitor-solve-my-problems.mp4" width="576" height="1024"></video><button class="media-play" type="button" aria-label="Play featured Gaitor ad"><span class="play" aria-hidden="true">▶</span></button></div>
       </div>
     </div>
   </section>
 
-  <section class="section contact" id="contact" aria-labelledby="contact-title">
-    <div class="wrap">
-      <div class="panel">
-        <div class="contact-head">
-          <h2 class="h2" id="contact-title">Got a product to film? <em>Let’s talk.</em></h2>
-          <p class="lede">Send the details and I’ll get back to you.</p>
-        </div>
-        <form id="contact-form" novalidate>
-          <div class="row">
-            <div class="field">
-              <label for="f-name">Your name <span class="opt">(optional)</span></label>
-              <input id="f-name" name="name" type="text" maxlength="120" autocomplete="name" placeholder="Jordan Lee…">
-            </div>
-            <div class="field">
-              <label for="f-email">Email</label>
-              <input id="f-email" name="email" type="email" maxlength="254" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="jordan@brand.com…" required aria-describedby="f-email-error">
-              <p class="error" id="f-email-error" aria-live="polite"></p>
-            </div>
+  <section class="work" id="work">
+    <h2 class="band-head">
+      <span class="sr-only">Every hook, on purpose.</span>
+      <span class="band-every" aria-hidden="true">EVERY</span>
+      <span class="band-swap" aria-hidden="true">HOOK.</span>
+      <span class="band-purpose" aria-hidden="true">on purpose.</span>
+    </h2>
+    <div class="reel-wrap"><ul class="reel" id="reel" aria-label="Past work"></ul></div>
+  </section>
+
+  <section class="section contact" id="contact">
+    <div class="dots" aria-hidden="true"></div>
+    <h2 class="display">Your product could be <em>everywhere.</em> Want to make that happen?</h2>
+    <div class="contact-grid">
+      <div class="form-card">
+        <p class="sub">Fill in the details and I’ll reach out!</p>
+        <form id="inquiry" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="jordan@brand.com" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next" aria-describedby="formNote" required>
           </div>
           <div class="field">
-            <label for="f-message">What brand are you growing?</label>
-            <textarea id="f-message" name="message" autocomplete="off" maxlength="1200" aria-describedby="f-message-hint" placeholder="Tell me about the product, timeline, and budget range…"></textarea>
-            <p class="hint" id="f-message-hint">Up to 1,200 characters.</p>
+            <label for="details">What brand are you growing?</label>
+            <textarea id="details" name="message" autocomplete="off" placeholder="Tell me about the product, timeline, and budget range…"></textarea>
           </div>
-          <div class="form-foot">
-            <button class="btn btn-primary" type="submit">Send inquiry
-              <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></svg>
-            </button>
-            <p class="alt">Or email me: <a href="mailto:michellesammonscollab@gmail.com?subject=UGC%20inquiry" translate="no">michellesammonscollab@<wbr>gmail.com</a></p>
-          </div>
-          <p class="note" id="form-note" role="status" aria-live="polite"></p>
+          <button type="submit" class="btn btn-accent" id="submitBtn">Send inquiry <span aria-hidden="true">→</span></button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
+      </div>
+      <div>
+        <p class="email-label">Here’s my email if that’s easier</p>
+        <a class="email-link" href="mailto:michellesammonscollab@gmail.com?subject=UGC%20Inquiry" translate="no">michellesammonscollab@<wbr>gmail.com</a>
       </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap"><div class="foot">
-    <a class="brand" href="#top" translate="no">Michelle Sammons</a>
-    <div class="foot-links">
-      <a href="mailto:michellesammonscollab@gmail.com" translate="no">michellesammonscollab@<wbr>gmail.com</a>
-      <a href="#top">Back to top</a>
-      <span>&copy; 2026</span>
-    </div>
-  </div></div>
+  <span>Michelle Sammons</span>
+  <nav aria-label="Contact">
+    <a href="mailto:michellesammonscollab@gmail.com" translate="no">michellesammonscollab@<wbr>gmail.com</a>
+  </nav>
 </footer>
 
 <script>
-(function () {
-  "use strict";
-  document.documentElement.classList.add("js");
-  document.addEventListener("touchstart", function () {}, { passive: true });
-  var mqReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
 
-  /* ---------- Nav border once the page scrolls ---------- */
-  var nav = document.getElementById("nav");
-  if ("IntersectionObserver" in window) {
-    var sentinel = document.createElement("div");
-    sentinel.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none";
-    sentinel.setAttribute("aria-hidden", "true");
-    document.body.prepend(sentinel);
-    new IntersectionObserver(function (e) {
-      nav.classList.toggle("is-stuck", !e[0].isIntersecting);
-    }).observe(sentinel);
-  }
+  // Past work. Each clip plays only when tapped, with sound; tap again to stop.
+  const clips = [
+    ['Kalshi', 'kalshi-car-promise', 'Love Island, car selfie', 1080, 1920],
+    ['Lip liner', 'lip-liner-overline-at-home', 'Overlining at home', 576, 1024],
+    ['Kalshi', 'kalshi-dancing-with-the-stars', 'Dancing With The Stars trend', 1080, 1920],
+    ['Wonderskin', 'wonderskin-liner-shades', 'Comparing two liner shades', 720, 1280],
+    ['Kalshi', 'kalshi-reality-tv', 'Love Island, to camera', 1080, 1920],
+    ['Gaitor', 'gaitor-compares-ai', 'Comparing AI answers', 576, 1024],
+    ['Lip liner', 'lip-liner-undetectable-car', 'Undetectable overline, in the car', 576, 1024],
+    ['Kalshi', 'kalshi-sportsbooks', 'Sportsbook payout comparison', 1080, 1920],
+    ['Kalshi', 'kalshi-faith-in-kenzie', 'Love Island, POV celebration', 1080, 1920],
+  ];
+  const reel = document.getElementById('reel');
+  reel.innerHTML = clips.map(([name, slug, what, w, h]) =>
+    `<li><figure class="clip">` +
+    `<video loop playsinline preload="none" poster="assets/videos/posters/${slug}.jpg" src="assets/videos/${slug}.mp4" width="${w}" height="${h}"></video>` +
+    `<button class="clip-btn" type="button" aria-pressed="false" aria-label="Play the ${name} ad, ${what}, with sound"><span class="play" aria-hidden="true">▶</span></button>` +
+    `<figcaption translate="no">${name}</figcaption></figure></li>`).join('');
 
-  /* ---------- Video players: one at a time, grid clips only on tap or click ---------- */
-  var soundOn = false;
-  var heroHold = false;
-  var current = null;
-  var players = [];
+  // Hero phone
+  const phone = document.getElementById('phone');
+  const phoneVideo = document.getElementById('phoneVideo');
+  const pauseBtn = document.getElementById('heroPause');
+  const soundBtn = document.getElementById('heroSound');
+  const phoneHit = document.getElementById('phoneHit');
+  let heroHeld = reduceMotion || saveData;   // held = the visitor (or their settings) wants it stopped
+  let heroVisible = true;
 
-  function label(p) {
-    if (p.el.classList.contains("is-missing")) return;
-    p.hit.setAttribute("aria-pressed", p.el.classList.contains("is-playing") ? "true" : "false");
+  function heroUI() {
+    const playing = !phoneVideo.paused;
+    phone.classList.toggle('playing', playing);
+    pauseBtn.textContent = playing ? 'Pause' : 'Play';
+    pauseBtn.setAttribute('aria-label', playing ? 'Pause the Kalshi ad' : 'Play the Kalshi ad');
+    soundBtn.textContent = phoneVideo.muted ? 'Sound on' : 'Sound off';
+    soundBtn.setAttribute('aria-pressed', String(!phoneVideo.muted));
+    phoneHit.setAttribute('aria-label', !playing ? 'Play the Kalshi ad' : (phoneVideo.muted ? 'Turn on sound for the Kalshi ad' : 'Turn off sound for the Kalshi ad'));
   }
-  function loadPoster(p) {
-    var d = p.video.getAttribute("data-poster");
-    if (d) { p.video.setAttribute("poster", d); p.video.removeAttribute("data-poster"); }
+  ['play', 'pause', 'volumechange'].forEach(ev => phoneVideo.addEventListener(ev, heroUI));
+  function heroSync() {
+    if (!heroHeld && heroVisible) phoneVideo.play().catch(() => {});
+    else if (!phoneVideo.paused) phoneVideo.pause();
   }
-  function applySound() {
-    players.forEach(function (p) {
-      p.video.muted = !soundOn;
-      p.el.classList.toggle("sound-on", soundOn);
-      if (p.sound) p.sound.setAttribute("aria-label", soundOn ? "Turn sound off" : "Turn sound on");
-    });
-    document.querySelectorAll("[data-sound-toggle]").forEach(function (b) {
-      b.classList.toggle("sound-on", soundOn);
-      var l = b.querySelector("[data-sound-label]");
-      if (l) l.textContent = soundOn ? "Mute" : "Unmute";
-      b.setAttribute("aria-label", soundOn ? "Mute the videos" : "Unmute the Kalshi video");
-    });
-  }
-  function stop(p) {
-    if (!p) return;
-    p.token++;
-    p.auto = false;
-    p.video.pause();
-    p.el.classList.remove("is-playing");
-    label(p);
-    if (current === p) current = null;
-  }
-  function start(p, auto) {
-    if (p.el.classList.contains("is-missing")) return;
-    if (current && current !== p) stop(current);
-    current = p;
-    p.auto = !!auto;
-    var token = ++p.token;
-    loadPoster(p);
-    p.video.muted = !soundOn;
-    p.el.classList.add("is-playing");
-    label(p);
-    var pr;
-    try { pr = p.video.play(); } catch (e) { pr = null; }
-    if (pr && pr.catch) pr.catch(function () {
-      if (token !== p.token || current !== p) return;
-      if (p.video.paused) stop(p);
-    });
-  }
-
-  document.querySelectorAll("[data-player]").forEach(function (el) {
-    var p = {
-      el: el,
-      kind: el.getAttribute("data-player"),
-      name: el.getAttribute("data-name"),
-      video: el.querySelector("video"),
-      hit: el.querySelector(".hit"),
-      sound: el.querySelector(".sound"),
-      token: 0,
-      auto: false
-    };
-    players.push(p);
-    p.hit.setAttribute("aria-label", "Play " + p.name + " video");
-    label(p);
-    var src = p.video.querySelector("source");
-    if (src) src.addEventListener("error", function () {
-      stop(p);
-      p.el.classList.add("is-missing");
-      p.hit.disabled = true;
-      p.hit.removeAttribute("aria-pressed");
-      p.hit.setAttribute("aria-label", p.name + " video is unavailable");
-    });
-    p.video.addEventListener("pause", function () {
-      if (current === p && p.video.paused) stop(p);
-    });
-    p.hit.addEventListener("click", function () {
-      if (p.el.classList.contains("is-playing")) {
-        stop(p);
-        if (p.kind === "hero") heroHold = true;
-      } else {
-        start(p, false);
-      }
-    });
-    if (p.sound) {
-      p.sound.addEventListener("click", function () { soundOn = !soundOn; applySound(); });
-    }
+  pauseBtn.addEventListener('click', () => { heroHeld = !phoneVideo.paused; heroSync(); });
+  soundBtn.addEventListener('click', () => {
+    phoneVideo.muted = !phoneVideo.muted;
+    if (!phoneVideo.muted) { heroHeld = false; heroSync(); }
   });
-  document.querySelectorAll("[data-sound-toggle]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      soundOn = !soundOn;
-      applySound();
-      var heroP = players.filter(function (x) { return x.kind === "hero"; })[0];
-      if (soundOn && heroP && current !== heroP) start(heroP, false);
+  phoneHit.addEventListener('click', () => {
+    if (phoneVideo.paused) { heroHeld = false; heroSync(); }
+    else phoneVideo.muted = !phoneVideo.muted;
+  });
+  new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; heroSync(); }).observe(phone);
+  heroUI();
+
+  // One video with sound at a time. A sound-on clip mutes the hero instead of stopping it.
+  document.addEventListener('play', e => {
+    const v = e.target;
+    if (v.muted) return;
+    document.querySelectorAll('video').forEach(o => {
+      if (o === v || o.muted) return;
+      if (o === phoneVideo) o.muted = true; else o.pause();
     });
-  });
-  applySound();
+  }, true);
 
-  var heroPlayer = players.filter(function (x) { return x.kind === "hero"; })[0];
-  var heroVisible = false;
-  if ("IntersectionObserver" in window) {
-    var vo = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        var p = players.filter(function (x) { return x.el === en.target; })[0];
-        if (!p) return;
-        if (p === heroPlayer) { heroVisible = en.isIntersecting; if (!heroVisible) heroHold = false; }
-        if (!en.isIntersecting && current === p) stop(p);
-      });
-      if (heroPlayer && heroVisible && !current && !heroHold && !mqReduce.matches && !document.hidden) start(heroPlayer, true);
-    }, { threshold: 0.35 });
-    players.forEach(function (p) { vo.observe(p.el); });
-    var po = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var p = players.filter(function (x) { return x.el === en.target; })[0];
-        if (p) loadPoster(p);
-        po.unobserve(en.target);
-      });
-    }, { rootMargin: "600px 0px" });
-    players.forEach(function (p) { if (p.video.hasAttribute("data-poster")) po.observe(p.el); });
-  } else {
-    players.forEach(loadPoster);
-  }
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden && current) stop(current);
-    else if (!document.hidden && !current && heroVisible && !heroHold && !mqReduce.matches && heroPlayer) start(heroPlayer, true);
-  });
-  var onReduce = function () {
-    if (mqReduce.matches && current && current.auto) stop(current);
-  };
-  if (mqReduce.addEventListener) mqReduce.addEventListener("change", onReduce);
-  else if (mqReduce.addListener) mqReduce.addListener(onReduce);
-
-  /* ---------- Contact: no form backend, so open a pre-filled email ---------- */
-  var TO = "michellesammonscollab@gmail.com";
-  var SUBJECT = "New UGC inquiry from your portfolio site";
-  var form = document.getElementById("contact-form");
-  var email = document.getElementById("f-email");
-  var err = document.getElementById("f-email-error");
-  var note = document.getElementById("form-note");
-  var MAX_HREF = 1899;
-
-  var msgBox = document.getElementById("f-message");
-  var hint = document.getElementById("f-message-hint");
-  var MAX_MSG = 1200;
-  msgBox.addEventListener("input", function () {
-    var left = MAX_MSG - msgBox.value.length;
-    hint.textContent = left > 150 ? "Up to 1,200 characters." : left + (left === 1 ? " character left." : " characters left.");
-    hint.classList.toggle("is-near", left <= 150);
+  // Featured video: tap the cover to play; the browser's own controls take over from there
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.media-play');
+    if (!btn) return;
+    const v = btn.previousElementSibling;
+    v.controls = true; btn.hidden = true;
+    v.play().catch(() => {});
   });
 
-  email.addEventListener("input", function () {
-    if (email.getAttribute("aria-invalid") === "true" && email.validity.valid) {
-      email.removeAttribute("aria-invalid"); err.textContent = "";
-    }
+  // Reel: tap plays with sound, a second tap stops it
+  function stopClip(v) {
+    v.pause();
+    const clip = v.closest('.clip');
+    clip.classList.remove('active');
+    clip.querySelector('.clip-btn').setAttribute('aria-pressed', 'false');
+  }
+  reel.querySelectorAll('video').forEach(v => v.addEventListener('pause', () => stopClip(v)));
+  reel.addEventListener('click', e => {
+    const b = e.target.closest('.clip-btn');
+    if (!b) return;
+    const v = b.previousElementSibling;
+    if (!v.paused) { stopClip(v); return; }
+    v.muted = false;
+    v.closest('.clip').classList.add('active');
+    b.setAttribute('aria-pressed', 'true');
+    v.play().catch(() => stopClip(v));
   });
 
-  form.addEventListener("submit", function (e) {
+  // Anything playing that scrolls well off screen stops
+  const offscreen = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting && !e.target.paused && e.target !== phoneVideo) e.target.pause();
+  }));
+  document.querySelectorAll('video').forEach(v => offscreen.observe(v));
+
+  // Nav turns solid once the hero scrolls away
+  const nav = document.getElementById('nav');
+  new IntersectionObserver(([e]) => nav.classList.toggle('solid', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' })
+    .observe(document.querySelector('.hero-copy'));
+
+  // No form backend: the inquiry opens a ready-to-send email to Michelle. Nothing is posted anywhere.
+  const form = document.getElementById('inquiry');
+  form.addEventListener('submit', e => {
     e.preventDefault();
-    if (!email.value.trim() || !email.validity.valid) {
-      email.setAttribute("aria-invalid", "true");
-      err.textContent = email.value.trim() ? "That email looks incomplete. Try name@brand.com." : "Add your email so I can reply.";
-      email.focus();
+    const note = document.getElementById('formNote');
+    if (!form.email.checkValidity() || !form.email.value.trim()) {
+      form.email.setAttribute('aria-invalid', 'true');
+      note.textContent = 'Add an email so I can reply.';
+      form.email.focus();
       return;
     }
-    var name = form.elements.name.value.trim();
-    var msg = form.elements.message.value.trim();
-    var head = (name ? "Name: " + name + "\n" : "") + "Email: " + email.value.trim() + "\n\n";
-    var full = head + msg;
-    var base = "mailto:" + TO + "?subject=" + encodeURIComponent(SUBJECT) + "&body=";
-    var href = base + encodeURIComponent(full);
-    if (href.length <= MAX_HREF) {
-      note.textContent = "Your email app should open with this filled in. Hit send there, or write to " + TO + ".";
-      window.location.href = href;
-      return;
-    }
-    var copied = false;
-    var done = function () {
-      var tail = copied
-        ? "\n\n(message trimmed, full text copied to your clipboard)"
-        : "\n\n(message trimmed to fit the email link)";
-      var chars = Array.from(msg);
-      var cut = msg;
-      while (chars.length && (base + encodeURIComponent(head + cut + "…" + tail)).length > MAX_HREF) {
-        chars = chars.slice(0, Math.max(0, chars.length - Math.max(20, Math.ceil(chars.length * 0.05))));
-        cut = chars.join("");
-      }
-      note.textContent = copied
-        ? "Your message was too long for an email link, so the email opens with a trimmed version. The full text is copied to your clipboard: paste it into the email before you send."
-        : "Your message was too long for an email link, so your email app opens with a shorter version. Copy your full message from the box above, or write to " + TO + ".";
-      window.location.href = base + encodeURIComponent(head + cut + "…" + tail);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      var settled = false;
-      var finish = function (ok) { if (settled) return; settled = true; copied = ok; done(); };
-      navigator.clipboard.writeText(full).then(function () { finish(true); }, function () { finish(false); });
-      setTimeout(function () { finish(false); }, 600);
-    } else {
-      done();
-    }
+    form.email.removeAttribute('aria-invalid');
+    const body = `${form.message.value.trim()}\n\nReply to: ${form.email.value.trim()}`;
+    location.href = 'mailto:michellesammonscollab@gmail.com?subject=' + encodeURIComponent('UGC Inquiry') + '&body=' + encodeURIComponent(body);
+    note.textContent = 'Your email app should open with this ready to send.';
   });
-})();
 </script>
+
 </body>
 </html>

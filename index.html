@@ -31,7 +31,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Michelle Sammons | UGC creator</title>
-<meta name="description" content="Michelle Sammons is a UGC creator. Watch her short vertical ads for Kalshi.">
+<meta name="description" content="Michelle Sammons is a UGC creator. Watch her short vertical ads for Kalshi and Gaitor.">
 <meta name="theme-color" content="#FCFAFE">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2716%27 fill=%27%236B3FD0%27/%3E%3C/svg%3E">
@@ -337,15 +337,20 @@
       translate: 0 var(--offset);
     }
   }
-  @media (min-width: 768px) {
+  @media (min-width: 768px) and (max-width: 1099px) {
     .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 20px; row-gap: 32px; --offset: 56px; margin-top: 28px; }
     .grid > li:nth-child(2n) { translate: none; }
     .grid > li:nth-child(3n+2) { translate: 0 var(--offset); }
+    /* A lone last card sits in the middle column */
+    .grid > li:last-child:nth-child(3n+1) { grid-column: 2; translate: 0 var(--offset); }
   }
+  /* Seven cards: four on top, three centered under them. Eight half-columns, each card spans two. */
   @media (min-width: 1100px) {
-    .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); --offset: 48px; }
-    .grid > li:nth-child(3n+2) { translate: none; }
-    .grid > li:nth-child(5n+2), .grid > li:nth-child(5n+4) { translate: 0 var(--offset); }
+    .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); column-gap: 24px; --offset: 48px; row-gap: calc(var(--offset) + 32px); margin-top: 28px; }
+    /* The centered bottom row straddles staggered and unstaggered columns, so the row gap clears the offset */
+    .grid > li { grid-column: span 2; }
+    .grid > li:nth-child(2n) { translate: 0 var(--offset); }
+    .grid > li:nth-child(5) { grid-column: 2 / span 2; }
   }
 
   .card .media { box-shadow: var(--shadow); }
@@ -366,8 +371,10 @@
   .brand-list li {
     font-family: var(--serif); font-optical-sizing: auto; font-variation-settings: "SOFT" 100;
     font-size: clamp(1.75rem, 5vw, 2.4rem); font-weight: 450; letter-spacing: -0.01em;
-    padding: 16px 18px; overflow-wrap: anywhere;
+    padding: 12px 18px; overflow-wrap: anywhere;
   }
+  .brand-list li:nth-child(3n+2) { font-style: italic; color: var(--purple); }
+  .brand-list { padding-block: 6px; }
 
   /* ---------- About ---------- */
   .about-inner { display: grid; gap: 20px; }
@@ -499,6 +506,15 @@
           <figcaption><b translate="no">Kalshi</b><span>Love Island, car selfie</span></figcaption>
         </figure></li>
         <li><figure class="card">
+          <div class="media" data-player="card" data-name="Gaitor, Using it to solve my problems">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/gaitor-solve-my-problems.jpg" width="576" height="1024" aria-hidden="true"><source src="assets/videos/gaitor-solve-my-problems.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Gaitor, Using it to solve my problems video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Gaitor</b><span>Using it to solve my problems</span></figcaption>
+        </figure></li>
+        <li><figure class="card">
           <div class="media" data-player="card" data-name="Kalshi, Dancing With The Stars trend">
   <video muted playsinline loop preload="none" data-poster="assets/videos/posters/kalshi-dancing-with-the-stars.jpg" width="1080" height="1920" aria-hidden="true"><source src="assets/videos/kalshi-dancing-with-the-stars.mp4" type="video/mp4"></video>
   <button class="hit" type="button" aria-pressed="false" aria-label="Play Kalshi, Dancing With The Stars trend video"></button>
@@ -515,6 +531,15 @@
   <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
 </div>
           <figcaption><b translate="no">Kalshi</b><span>Love Island, to camera</span></figcaption>
+        </figure></li>
+        <li><figure class="card">
+          <div class="media" data-player="card" data-name="Gaitor, Comparing AI answers">
+  <video muted playsinline loop preload="none" data-poster="assets/videos/posters/gaitor-compares-ai.jpg" width="576" height="1024" aria-hidden="true"><source src="assets/videos/gaitor-compares-ai.mp4" type="video/mp4"></video>
+  <button class="hit" type="button" aria-pressed="false" aria-label="Play Gaitor, Comparing AI answers video"></button>
+  <span class="chip" aria-hidden="true"><svg class="i-play" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg><svg class="i-pause" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,48V208a16,16,0,0,1-16,16H160a16,16,0,0,1-16-16V48a16,16,0,0,1,16-16h40A16,16,0,0,1,216,48ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Z"/></svg></span>
+  <button class="sound" type="button" aria-label="Turn sound on"><svg class="i-off" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M192,152V104a8,8,0,0,1,16,0v48a8,8,0,0,1-16,0Zm40-72a8,8,0,0,0-8,8v80a8,8,0,0,0,16,0V88A8,8,0,0,0,232,80ZM221.92,210.62a8,8,0,1,1-11.84,10.76L168,175.09V224a8,8,0,0,1-12.91,6.31L85.25,176H40a16,16,0,0,1-16-16V96A16,16,0,0,1,40,80H81.55L50.08,45.38A8,8,0,0,1,61.92,34.62ZM152,157.49,96.1,96H40v64H88a7.94,7.94,0,0,1,4.91,1.69L152,207.64ZM125.06,69.31l26.94-21v58.47a8,8,0,0,0,16,0V32a8,8,0,0,0-12.91-6.31l-39.85,31a8,8,0,0,0,9.82,12.63Z"/></svg><svg class="i-on" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M163.51,24.81a8,8,0,0,0-8.42.88L85.25,80H40A16,16,0,0,0,24,96v64a16,16,0,0,0,16,16H85.25l69.84,54.31A8,8,0,0,0,168,224V32A8,8,0,0,0,163.51,24.81ZM152,207.64,92.91,161.69A7.94,7.94,0,0,0,88,160H40V96H88a7.94,7.94,0,0,0,4.91-1.69L152,48.36ZM208,104v48a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm32-16v80a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Z"/></svg></button>
+</div>
+          <figcaption><b translate="no">Gaitor</b><span>Comparing AI answers</span></figcaption>
         </figure></li>
         <li><figure class="card">
           <div class="media" data-player="card" data-name="Kalshi, Sportsbook payout comparison">
@@ -542,7 +567,7 @@
     <div class="wrap">
       <h2 class="brands-label" id="brands-title">Brands I’ve worked with</h2>
       <ul class="brand-list" translate="no">
-        <li>Kalshi</li>
+        <li>Kalshi</li><li>Gaitor</li><li>DoorDash</li><li>Wonderskin</li><li>Amazon</li><li>Nello</li><li>G2G</li><li>BabeLash</li>
       </ul>
     </div>
   </section>

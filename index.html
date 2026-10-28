@@ -8,6 +8,9 @@
 <title>Michelle Sammons | UGC creator</title>
 <meta name="description" content="Michelle Sammons makes UGC ads that feel native on your FYP, for brands like Kalshi, DoorDash and Amazon.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%236B3FD0'/%3E%3C/svg%3E">
+<script>
+  document.documentElement.classList.add('js');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
@@ -24,10 +27,11 @@
       --surface #F1EBFA  video wells before the poster paints
       --field   #857D8C  input borders, 3.9:1 (non-text)
 
-    MOTION: none, per Zack's creator-site rule. Everything his site animates is drawn at its resting state:
-      no word rise, no scroll reveals, no count-up, no reel scroll, no word swap,
-      no heart-monitor sweep, no cursor glow, no tilt or grow on play, no hover movement.
-      Only color changes on hover and focus. Videos play on tap; the hero autoplays muted with a Pause button.
+    MOTION (Zack, 10-28: "use my website as an example"): every effect on zacksammons.com, same timings,
+      easing and triggers, recolored purple. Word rise, hero load-in, scroll reveals, count-up, heart-monitor
+      sweep, purple cursor glow on the dot field, tilt-and-grow on play (hero: while its sound is on), reel
+      auto-scroll with muted on-screen clips, word swap with Pause, hover and press movement.
+      prefers-reduced-motion is handled exactly as his site does it.
   */
   :root {
     --bg: #FCFAFE;
@@ -40,6 +44,8 @@
     --accent-dk: #5A31B8;
     --on-accent: #FFFFFF;
     --device: #231A30;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
     --pad: clamp(20px, 5vw, 72px);
     --nav-h: 64px;
   }
@@ -81,11 +87,28 @@
   }
   .display em { font-style: italic; color: var(--accent); }
 
+  /* Word masks: each word rises out of its own line. Bottom padding keeps descenders (y, g, p) unclipped. */
+  .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.04em 0.06em 0.14em; margin: -0.04em -0.06em -0.14em; }
+  .wi { display: inline-block; }
+  .js .split .wi { transform: translateY(108%); }
+  .js .split.in .wi {
+    transform: none;
+    transition: transform 700ms var(--ease-out);
+    transition-delay: calc(var(--i) * 40ms);
+  }
+
+  .js .reveal { opacity: 0; transform: translateY(16px); }
+  .js .reveal.in {
+    opacity: 1; transform: none;
+    transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 40ms);
+  }
+
   .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .skip {
     position: fixed; top: 12px; left: 12px; z-index: 20; padding: 10px 16px; border-radius: 999px;
     background: var(--text); color: var(--bg); font-weight: 700; font-size: 14px;
-    transform: translateY(-160%);
+    transform: translateY(-160%); transition: transform 160ms var(--ease-out);
   }
   .skip:focus-visible { transform: none; }
 
@@ -94,7 +117,13 @@
     display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
     height: 48px; padding: 0 24px; border-radius: 999px;
     font-weight: 700; font-size: 15px; letter-spacing: 0.005em;
-    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+    transition: transform 160ms var(--ease-out), background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .arrow { display: inline-block; transition: transform 200ms var(--ease-out); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover .arrow-down { transform: translateY(2px); }
+    .btn:hover .arrow-right { transform: translateX(3px); }
   }
   .btn-accent { background: var(--accent); color: var(--on-accent); }
   .btn-ghost { border: 1.5px solid rgba(35, 26, 48, 0.4); color: var(--text); }
@@ -127,12 +156,20 @@
     padding: calc(var(--nav-h) + 56px) var(--pad) 72px;
     display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(32px, 6vw, 96px);
   }
-  /* Dot field, static. The hero has the full field; Contact gets a quieter patch of it. */
-  .dots {
+  /* Dot field: grey dots, and purple ones that light up under the mouse. The hero has the full field;
+     Contact gets a quieter patch of it. */
+  .dots, .glow {
     position: absolute; inset: 0; z-index: -1; pointer-events: none;
     background-size: 26px 26px; background-position: 13px 13px;
-    background-image: radial-gradient(rgba(35, 26, 48, 0.16) 1.2px, transparent 1.7px);
   }
+  .dots { background-image: radial-gradient(rgba(35, 26, 48, 0.16) 1.2px, transparent 1.7px); }
+  .glow {
+    background-image: radial-gradient(var(--accent) 1.6px, transparent 2.1px);
+    -webkit-mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), #000, transparent 72%);
+            mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), #000, transparent 72%);
+    opacity: 0; transition: opacity 300ms ease;
+  }
+  [data-spotlight].pointer .glow { opacity: 1; }
   .hero .dots {
     -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
             mask-image: linear-gradient(to bottom, #000 55%, transparent);
@@ -147,15 +184,30 @@
   @media (min-width: 760px) { .hero h1 .line { display: block; white-space: nowrap; } }
 
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  .js .hero-ctas { opacity: 0; transform: translateY(8px); }
+  .js .ready .hero-ctas {
+    opacity: 1; transform: none;
+    transition: opacity 400ms var(--ease-out) 200ms, transform 400ms var(--ease-out) 200ms;
+  }
 
-  /* Phone: the Kalshi ad plays muted on its own. Tap the screen for sound; Pause stops it. */
+  /* Phone: the Kalshi ad plays muted on its own. Tap the screen for sound; Pause stops it.
+     It lands tilted like Zack's, and straightens and grows while its sound is on (his phone does that while it plays). */
   .phone {
     position: relative; display: block;
     width: 272px; aspect-ratio: 9 / 18.6; padding: 10px; border-radius: 42px;
     background: var(--device); border: 1px solid var(--line);
     box-shadow: 0 50px 90px -30px rgba(58, 30, 120, 0.45);
     transform: rotate(3deg);
+    transition: transform 220ms var(--ease-in-out);
   }
+  .js .phone { opacity: 0; transform: translateY(24px) rotate(6deg); }
+  .js .ready .phone {
+    opacity: 1; transform: rotate(3deg);
+    transition: opacity 600ms var(--ease-out) 120ms, transform 800ms var(--ease-out) 120ms;
+  }
+  /* After the load-in, taps answer fast: 280ms to straighten and grow, 220ms back */
+  .js .ready .phone.settled { transition: transform 220ms var(--ease-in-out); }
+  .js .ready .phone.loud, .phone.loud { transform: rotate(0deg) scale(1.06); transition: transform 280ms var(--ease-in-out); }
   .phone::before {
     content: ''; position: absolute; top: 20px; left: 50%; z-index: 3;
     width: 74px; height: 20px; margin-left: -37px; border-radius: 20px; background: var(--device);
@@ -166,8 +218,9 @@
   .play {
     position: absolute; top: 50%; left: 50%; width: 60px; height: 60px; margin: -30px 0 0 -30px; border-radius: 50%;
     display: grid; place-items: center; background: rgba(35, 26, 48, 0.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    font-size: 18px; color: #fff; pointer-events: none; transition: background-color 150ms ease;
+    font-size: 18px; color: #fff; pointer-events: none; transition: transform 160ms var(--ease-out), background-color 150ms ease;
   }
+  .screen-hit:active ~ .play, .media-play:active .play, .clip-btn:active .play { transform: scale(0.94); }
   .phone.playing .play { display: none; }
   .phone-ctrls {
     position: absolute; left: 12px; right: 12px; bottom: 14px; z-index: 2;
@@ -199,6 +252,9 @@
     color: #fff; white-space: nowrap;
   }
   @keyframes marquee { to { transform: translateX(calc(-50% - 32px)); } }
+  /* the name under the mouse grows, like his logos */
+  .logos-track li { transition: transform 200ms ease; }
+  @media (hover: hover) and (pointer: fine) { .logos-track li:hover { transform: scale(1.2); } }
   @media (max-width: 759px) {
     .logos { padding: 20px 0; }
     .logos-track { gap: 44px; animation-duration: 26s; }
@@ -239,27 +295,36 @@
   }
   .band-every { font-weight: 900; font-stretch: 125%; }
   .band-swap {
-    display: inline-block; line-height: 1.08;
+    display: inline-grid; height: 1.08em; overflow: hidden;
     font-weight: 900; font-stretch: 125%;
     color: transparent; -webkit-text-stroke: clamp(1px, 0.11vw, 1.8px) var(--on-accent);
   }
+  .band-swap span { grid-area: 1 / 1; text-align: center; line-height: 1.08; transform: translateY(105%); }
+  .band-swap span.on { transform: none; }
+  .band-swap span.off { transform: translateY(-105%); }
+  .band-swap.live span { transition: transform 500ms var(--ease-in-out); }
   .band-purpose { font-style: italic; font-weight: 800; font-stretch: 100%; padding-bottom: 0.06em; }
+  .band-pause {
+    position: absolute; top: clamp(14px, 2vw, 24px); right: var(--pad); min-height: 32px;
+    font-size: 13px; font-weight: 600; color: rgba(255, 255, 255, 0.82);
+    transition: color 150ms ease;
+  }
+  @media (hover: hover) and (pointer: fine) { .band-pause:hover { color: var(--on-accent); } }
 
-  /* His row scrolls itself; here it holds still and you swipe or scroll it. Same row, same card size, same edge fades. */
-  .reel-wrap { position: relative; margin-inline: calc(var(--pad) * -1); }
+  /* One row of clips that never stops, like his. Clips play muted while on screen; tapping one turns its
+     sound on and holds the row still. Reduced motion gets the still, swipeable row instead. */
+  .reel-wrap { position: relative; margin-inline: calc(var(--pad) * -1); overflow: hidden; }
   .reel-wrap::before, .reel-wrap::after {
     content: ''; position: absolute; top: 0; bottom: 0; width: clamp(24px, 5vw, 80px); z-index: 1; pointer-events: none;
   }
   .reel-wrap::before { left: 0; background: linear-gradient(to right, var(--accent), transparent); }
   .reel-wrap::after { right: 0; background: linear-gradient(to left, var(--accent), transparent); }
-  .reel {
-    display: flex; gap: 16px; list-style: none;
-    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
-    padding: 0 clamp(24px, 5vw, 80px) 6px; scroll-padding-inline: clamp(24px, 5vw, 80px);
-    scrollbar-width: none;
-  }
-  .reel::-webkit-scrollbar { display: none; }
-  .reel li { flex: none; width: clamp(150px, 15vw, 220px); scroll-snap-align: start; }
+  /* 9 clips instead of his 11, so 74s keeps his row speed (90s x 9/11) */
+  .reel { display: flex; gap: 16px; width: max-content; list-style: none; padding-bottom: 6px; animation: reel 74s linear infinite; }
+  .reel.hold, .work.held .reel { animation-play-state: paused; }
+  @keyframes reel { to { transform: translateX(calc(-50% - 8px)); } }
+  .reel li { flex: none; width: clamp(150px, 15vw, 220px); }
+  .reel.auto .clip-btn .play { display: none; }
   .clip { position: relative; }
   .clip video {
     width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 18px; background: var(--surface);
@@ -273,12 +338,27 @@
 
   /* About: one row on laptop and up (text, results, video). Stacks only below 860px. */
   .about, .contact { position: relative; isolation: isolate; overflow: hidden; }
-  /* The heart-monitor line behind About, drawn still */
+  /* Heart monitor behind About: a faint trace with a bright sweep running along it, left to right.
+     Runs only while the section is on screen. */
   .ecg {
     position: absolute; left: 0; width: 100%; top: 50%; height: clamp(120px, 14vw, 200px);
     transform: translateY(-50%); z-index: -1; pointer-events: none; overflow: visible;
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) 38%, #000 62%);
+            mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) 38%, #000 62%);
   }
-  .ecg path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; opacity: 0.14; }
+  .ecg path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .ecg-base { opacity: 0.14; }
+  .ecg-tail { opacity: 0.32; stroke-dasharray: 0.3 2; stroke-dashoffset: 0.3; }
+  .ecg-head { opacity: 0.95; stroke-dasharray: 0.07 2; stroke-dashoffset: 0.07; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ecg-tail { animation: sweep-tail 4.6s linear infinite paused; }
+    .ecg-head { animation: sweep-head 4.6s linear infinite paused; }
+    .about.beating .ecg-tail, .about.beating .ecg-head { animation-play-state: running; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ecg-tail, .ecg-head { display: none; } }
+  /* the bright head travels from the left edge to past the right edge, the tail trails behind it */
+  @keyframes sweep-head { from { stroke-dashoffset: 0.07; } to { stroke-dashoffset: -1.3; } }
+  @keyframes sweep-tail { from { stroke-dashoffset: 0.3; } to { stroke-dashoffset: -1.07; } }
 
   .about-row {
     display: grid; align-items: center; gap: clamp(32px, 4vw, 64px);
@@ -296,8 +376,9 @@
     max-width: 320px; margin-left: auto; padding: 8px; border-radius: 30px;
     background: var(--device); border: 1px solid var(--line);
     box-shadow: 0 40px 80px -30px rgba(58, 30, 120, 0.45);
-    transform: rotate(-3deg);
+    transform: rotate(-3deg); transition: transform 220ms var(--ease-in-out);
   }
+  .about-video .media.playing { transform: rotate(0deg) scale(1.08); transition: transform 280ms var(--ease-in-out); z-index: 1; }
   .about-video video { border-radius: 22px; }
   .about-video .media-play { inset: 8px; border-radius: 22px; }
   @media (max-width: 859px) {
@@ -356,6 +437,25 @@
   footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
   footer a { overflow-wrap: anywhere; }
   @media (hover: hover) and (pointer: fine) { footer a { transition: color 150ms ease; } footer a:hover { color: var(--text); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .split .wi, .js .reveal, .js .hero-ctas, .js .phone { transform: none !important; }
+    .js .reveal, .js .hero-ctas, .js .phone { opacity: 1 !important; }
+    .js .split.in .wi { transition: none; }
+    .js .reveal.in { transition: opacity 200ms ease; }
+    .band-pause { display: none; }
+    /* the still row, swiped by hand */
+    .reel {
+      animation: none; width: auto;
+      overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity;
+      padding: 0 clamp(24px, 5vw, 80px) 6px; scroll-padding-inline: clamp(24px, 5vw, 80px);
+      scrollbar-width: none;
+    }
+    .reel::-webkit-scrollbar { display: none; }
+    .reel li { scroll-snap-align: start; }
+    .phone, .phone.loud { transition: none; }
+    .about-video .media, .about-video .media.playing { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -368,12 +468,13 @@
 </header>
 
 <main>
-  <section class="hero" id="hero">
+  <section class="hero" id="hero" data-spotlight>
     <div class="dots" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
     <div class="hero-copy">
-      <h1 class="display"><span class="line">I make brands feel</span> <span class="line"><em>native</em> on your FYP.</span></h1>
+      <h1 class="display split"><span class="line">I make brands feel</span> <span class="line"><em>native</em> on your FYP.</span></h1>
       <div class="hero-ctas">
-        <a href="#about" class="btn btn-accent">See why it works <span aria-hidden="true">↓</span></a>
+        <a href="#about" class="btn btn-accent">See why it works <span class="arrow arrow-down" aria-hidden="true">↓</span></a>
         <a href="#contact" class="btn btn-ghost">Work with me</a>
       </div>
     </div>
@@ -397,25 +498,25 @@
   </div>
 
   <section class="section about" id="about">
-    <svg class="ecg" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0 110H70L78 103L86 103L94 110H120L128 120L138 28L148 152L156 110H190L205 94L222 94L236 110H300H370L378 103L386 103L394 110H420L428 120L438 28L448 152L456 110H490L505 94L522 94L536 110H600H670L678 103L686 103L694 110H720L728 120L738 28L748 152L756 110H790L805 94L822 94L836 110H900H970L978 103L986 103L994 110H1020L1028 120L1038 28L1048 152L1056 110H1090L1105 94L1122 94L1136 110H1200"/></svg>
+    <svg class="ecg" viewBox="0 0 1200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path class="ecg-base" pathLength="1" d="M0 110H70L78 103L86 103L94 110H120L128 120L138 28L148 152L156 110H190L205 94L222 94L236 110H300H370L378 103L386 103L394 110H420L428 120L438 28L448 152L456 110H490L505 94L522 94L536 110H600H670L678 103L686 103L694 110H720L728 120L738 28L748 152L756 110H790L805 94L822 94L836 110H900H970L978 103L986 103L994 110H1020L1028 120L1038 28L1048 152L1056 110H1090L1105 94L1122 94L1136 110H1200"/><path class="ecg-tail" pathLength="1" d="M0 110H70L78 103L86 103L94 110H120L128 120L138 28L148 152L156 110H190L205 94L222 94L236 110H300H370L378 103L386 103L394 110H420L428 120L438 28L448 152L456 110H490L505 94L522 94L536 110H600H670L678 103L686 103L694 110H720L728 120L738 28L748 152L756 110H790L805 94L822 94L836 110H900H970L978 103L986 103L994 110H1020L1028 120L1038 28L1048 152L1056 110H1090L1105 94L1122 94L1136 110H1200"/><path class="ecg-head" pathLength="1" d="M0 110H70L78 103L86 103L94 110H120L128 120L138 28L148 152L156 110H190L205 94L222 94L236 110H300H370L378 103L386 103L394 110H420L428 120L438 28L448 152L456 110H490L505 94L522 94L536 110H600H670L678 103L686 103L694 110H720L728 120L738 28L748 152L756 110H790L805 94L822 94L836 110H900H970L978 103L986 103L994 110H1020L1028 120L1038 28L1048 152L1056 110H1090L1105 94L1122 94L1136 110H1200"/></svg>
     <div class="about-row">
       <div class="about-copy">
-        <h2 class="display">Most UGC ads are dying.</h2>
-        <p class="lead">We’ve all built internal ad blockers. We skip. We scroll. We zone out. Snap creatives are outperforming everything.</p>
-        <p class="pitch">Let me build an ad for you that doesn’t feel like an ad (but still sells like crazy):</p>
-        <p class="body">I make ads that perform because people watch it for entertainment, but relate to a problem and are given the best fix (your product). This works for big brands like Amazon, DoorDash, and even Kalshi.</p>
+        <h2 class="display split">Most UGC ads are dying.</h2>
+        <p class="lead reveal">We’ve all built internal ad blockers. We skip. We scroll. We zone out. Snap creatives are outperforming everything.</p>
+        <p class="pitch reveal">Let me build an ad for you that doesn’t feel like an ad (but still sells like crazy):</p>
+        <p class="body reveal">I make ads that perform because people watch it for entertainment, but relate to a problem and are given the best fix (your product). This works for big brands like Amazon, DoorDash, and even Kalshi.</p>
       </div>
       <div class="stats">
-        <div class="stat">
-          <div class="stat-num">8</div>
+        <div class="stat reveal" style="--i:0">
+          <div class="stat-num"><span class="count" data-to="8" data-dec="0">8</span></div>
           <div class="stat-label">Brands Worked With</div>
         </div>
-        <div class="stat">
-          <div class="stat-num">11</div>
+        <div class="stat reveal" style="--i:2">
+          <div class="stat-num"><span class="count" data-to="11" data-dec="0">11</span></div>
           <div class="stat-label">Ads On This Page</div>
         </div>
       </div>
-      <div class="about-video">
+      <div class="about-video reveal" style="--i:3">
         <div class="media"><video preload="none" playsinline poster="assets/videos/posters/gaitor-solve-my-problems.jpg" src="assets/videos/gaitor-solve-my-problems.mp4" width="576" height="1024"></video><button class="media-play" type="button" aria-label="Play featured Gaitor ad"><span class="play" aria-hidden="true">▶</span></button></div>
       </div>
     </div>
@@ -423,19 +524,21 @@
 
   <section class="work" id="work">
     <h2 class="band-head">
-      <span class="sr-only">Every hook, on purpose.</span>
+      <span class="sr-only">Every hook, second, cut and frame, on purpose.</span>
       <span class="band-every" aria-hidden="true">EVERY</span>
-      <span class="band-swap" aria-hidden="true">HOOK.</span>
+      <span class="band-swap" id="bandSwap" aria-hidden="true"><span class="on">HOOK.</span><span>SECOND.</span><span>CUT.</span><span>FRAME.</span></span>
       <span class="band-purpose" aria-hidden="true">on purpose.</span>
     </h2>
+    <button class="band-pause" id="bandPause" type="button" aria-pressed="false">Pause</button>
     <div class="reel-wrap"><ul class="reel" id="reel" aria-label="Past work"></ul></div>
   </section>
 
-  <section class="section contact" id="contact">
+  <section class="section contact" id="contact" data-spotlight>
     <div class="dots" aria-hidden="true"></div>
-    <h2 class="display">Your product could be <em>everywhere.</em> Want to make that happen?</h2>
+    <div class="glow" aria-hidden="true"></div>
+    <h2 class="display split">Your product could be <em>everywhere.</em> Want to make that happen?</h2>
     <div class="contact-grid">
-      <div class="form-card">
+      <div class="form-card reveal">
         <p class="sub">Fill in the details and I’ll reach out!</p>
         <form id="inquiry" novalidate>
           <div class="field">
@@ -446,11 +549,11 @@
             <label for="details">What brand are you growing?</label>
             <textarea id="details" name="message" autocomplete="off" placeholder="Tell me about the product, timeline, and budget range…"></textarea>
           </div>
-          <button type="submit" class="btn btn-accent" id="submitBtn">Send inquiry <span aria-hidden="true">→</span></button>
+          <button type="submit" class="btn btn-accent" id="submitBtn">Send inquiry <span class="arrow arrow-right" aria-hidden="true">→</span></button>
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
       </div>
-      <div>
+      <div class="reveal" style="--i:2">
         <p class="email-label">Here’s my email if that’s easier</p>
         <a class="email-link" href="mailto:michellesammonscollab@gmail.com?subject=UGC%20Inquiry" translate="no">michellesammonscollab@<wbr>gmail.com</a>
       </div>
@@ -467,28 +570,89 @@
 
 <script>
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const saveData = !!(navigator.connection && navigator.connection.saveData);
 
-  // Past work. Each clip plays only when tapped, with sound; tap again to stop.
-  const clips = [
-    ['Kalshi', 'kalshi-car-promise', 'Love Island, car selfie', 1080, 1920],
-    ['Lip liner', 'lip-liner-overline-at-home', 'Overlining at home', 576, 1024],
-    ['Kalshi', 'kalshi-dancing-with-the-stars', 'Dancing With The Stars trend', 1080, 1920],
-    ['Wonderskin', 'wonderskin-liner-shades', 'Comparing two liner shades', 720, 1280],
-    ['Kalshi', 'kalshi-reality-tv', 'Love Island, to camera', 1080, 1920],
-    ['Gaitor', 'gaitor-compares-ai', 'Comparing AI answers', 576, 1024],
-    ['Lip liner', 'lip-liner-undetectable-car', 'Undetectable overline, in the car', 576, 1024],
-    ['Kalshi', 'kalshi-sportsbooks', 'Sportsbook payout comparison', 1080, 1920],
-    ['Kalshi', 'kalshi-faith-in-kenzie', 'Love Island, POV celebration', 1080, 1920],
-  ];
-  const reel = document.getElementById('reel');
-  reel.innerHTML = clips.map(([name, slug, what, w, h]) =>
-    `<li><figure class="clip">` +
-    `<video loop playsinline preload="none" poster="assets/videos/posters/${slug}.jpg" src="assets/videos/${slug}.mp4" width="${w}" height="${h}"></video>` +
-    `<button class="clip-btn" type="button" aria-pressed="false" aria-label="Play the ${name} ad, ${what}, with sound"><span class="play" aria-hidden="true">▶</span></button>` +
-    `<figcaption translate="no">${name}</figcaption></figure></li>`).join('');
+  // Split headings into word masks
+  document.querySelectorAll('.split').forEach(el => {
+    let i = 0;
+    const wrap = node => {
+      [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(s => {
+            if (!s) return;
+            if (/^\s+$/.test(s)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const w = document.createElement('span'); w.className = 'w';
+            const wi = document.createElement('span'); wi.className = 'wi'; wi.textContent = s;
+            wi.style.setProperty('--i', i++);
+            w.appendChild(wi); frag.appendChild(w);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) {
+          wrap(n);
+        }
+      });
+    };
+    wrap(el);
+  });
 
-  // Hero phone
+  // Count numbers up the first time they are seen
+  function countUp(el) {
+    const to = parseFloat(el.dataset.to), dec = +el.dataset.dec || 0, dur = 1400, t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      el.textContent = (to * (p === 1 ? 1 : 1 - Math.pow(2, -10 * p))).toFixed(dec);
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  if (!reduceMotion) document.querySelectorAll('.count').forEach(el => { el.textContent = (0).toFixed(+el.dataset.dec || 0); });
+
+  // Reveal once on scroll
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    if (!reduceMotion) e.target.querySelectorAll('.count').forEach(countUp);
+    io.unobserve(e.target);
+  }), { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+
+  // Hero entrance waits for the fonts so the words don't reflow mid-rise
+  const hero = document.getElementById('hero');
+  function start() {
+    if (start.done) return; start.done = true;
+    hero.classList.add('ready');
+    hero.querySelector('h1').classList.add('in');
+    document.querySelectorAll('.split:not(.in), .reveal').forEach(el => io.observe(el));
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(start);
+  setTimeout(start, 700);
+
+  // Heart monitor in About: only runs while the section is on screen
+  const about = document.getElementById('about');
+  new IntersectionObserver(([e]) => about.classList.toggle('beating', e.isIntersecting)).observe(about);
+
+  // Nav turns solid once the hero scrolls away
+  const nav = document.getElementById('nav');
+  new IntersectionObserver(([e]) => nav.classList.toggle('solid', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' })
+    .observe(document.querySelector('.hero-copy'));
+
+  // Purple dots light up under the cursor (mouse only)
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('[data-spotlight]').forEach(sec => {
+      const glow = sec.querySelector('.glow');
+      let raf = 0, x = 0, y = 0;
+      sec.addEventListener('pointermove', e => {
+        x = e.pageX - sec.offsetLeft; y = e.pageY - sec.offsetTop;
+        sec.classList.add('pointer');
+        if (!raf) raf = requestAnimationFrame(() => { glow.style.setProperty('--mx', x + 'px'); glow.style.setProperty('--my', y + 'px'); raf = 0; });
+      });
+      sec.addEventListener('pointerleave', () => sec.classList.remove('pointer'));
+    });
+  }
+
+  // Hero phone. The Kalshi ad plays muted on its own (her site has no still photo behind it).
+  // Like Zack's phone: a tap plays it from the top with sound and the phone straightens and grows;
+  // a tap while it has sound pauses it and the phone tilts back. Pause and Sound chips stay.
   const phone = document.getElementById('phone');
   const phoneVideo = document.getElementById('phoneVideo');
   const pauseBtn = document.getElementById('heroPause');
@@ -497,14 +661,18 @@
   let heroHeld = reduceMotion || saveData;   // held = the visitor (or their settings) wants it stopped
   let heroVisible = true;
 
+  phone.addEventListener('transitionend', e => { if (e.target === phone && e.propertyName === 'transform') phone.classList.add('settled'); });
+  setTimeout(() => phone.classList.add('settled'), 1500);
+
   function heroUI() {
     const playing = !phoneVideo.paused;
     phone.classList.toggle('playing', playing);
+    phone.classList.toggle('loud', playing && !phoneVideo.muted);
     pauseBtn.textContent = playing ? 'Pause' : 'Play';
     pauseBtn.setAttribute('aria-label', playing ? 'Pause the Kalshi ad' : 'Play the Kalshi ad');
     soundBtn.textContent = phoneVideo.muted ? 'Sound on' : 'Sound off';
     soundBtn.setAttribute('aria-pressed', String(!phoneVideo.muted));
-    phoneHit.setAttribute('aria-label', !playing ? 'Play the Kalshi ad' : (phoneVideo.muted ? 'Turn on sound for the Kalshi ad' : 'Turn off sound for the Kalshi ad'));
+    phoneHit.setAttribute('aria-label', playing && !phoneVideo.muted ? 'Pause the Kalshi ad' : 'Play the Kalshi ad with sound');
   }
   ['play', 'pause', 'volumechange'].forEach(ev => phoneVideo.addEventListener(ev, heroUI));
   function heroSync() {
@@ -517,21 +685,18 @@
     if (!phoneVideo.muted) { heroHeld = false; heroSync(); }
   });
   phoneHit.addEventListener('click', () => {
-    if (phoneVideo.paused) { heroHeld = false; heroSync(); }
-    else phoneVideo.muted = !phoneVideo.muted;
+    if (!phoneVideo.paused && !phoneVideo.muted) { heroHeld = true; heroSync(); return; }
+    heroHeld = false;
+    phoneVideo.currentTime = 0; phoneVideo.muted = false;
+    heroSync();
   });
   new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; heroSync(); }).observe(phone);
   heroUI();
 
-  // One video with sound at a time. A sound-on clip mutes the hero instead of stopping it.
-  document.addEventListener('play', e => {
-    const v = e.target;
-    if (v.muted) return;
-    document.querySelectorAll('video').forEach(o => {
-      if (o === v || o.muted) return;
-      if (o === phoneVideo) o.muted = true; else o.pause();
-    });
-  }, true);
+  // Featured video: tilted at rest; it grows and straightens while it plays
+  const featured = document.querySelector('.about-video video');
+  featured.addEventListener('play', () => featured.parentElement.classList.add('playing'));
+  ['pause', 'ended'].forEach(ev => featured.addEventListener(ev, () => featured.parentElement.classList.remove('playing')));
 
   // Featured video: tap the cover to play; the browser's own controls take over from there
   document.addEventListener('click', e => {
@@ -542,35 +707,118 @@
     v.play().catch(() => {});
   });
 
-  // Reel: tap plays with sound, a second tap stops it
-  function stopClip(v) {
-    v.pause();
-    const clip = v.closest('.clip');
-    clip.classList.remove('active');
-    clip.querySelector('.clip-btn').setAttribute('aria-pressed', 'false');
+  // The featured video stops once it scrolls off screen
+  new IntersectionObserver(([e]) => { if (!e.isIntersecting && !featured.paused) featured.pause(); }).observe(featured);
+
+  // Past work. Two copies make the loop seamless.
+  const clips = [
+    ['Kalshi', 'kalshi-car-promise', 'Love Island, car selfie', 1080, 1920],
+    ['Lip liner', 'lip-liner-overline-at-home', 'Overlining at home', 576, 1024],
+    ['Kalshi', 'kalshi-dancing-with-the-stars', 'Dancing With The Stars trend', 1080, 1920],
+    ['Wonderskin', 'wonderskin-liner-shades', 'Comparing two liner shades', 720, 1280],
+    ['Kalshi', 'kalshi-reality-tv', 'Love Island, to camera', 1080, 1920],
+    ['Gaitor', 'gaitor-compares-ai', 'Comparing AI answers', 576, 1024],
+    ['Lip liner', 'lip-liner-undetectable-car', 'Undetectable overline, in the car', 576, 1024],
+    ['Kalshi', 'kalshi-sportsbooks', 'Sportsbook payout comparison', 1080, 1920],
+    ['Kalshi', 'kalshi-faith-in-kenzie', 'Love Island, POV celebration', 1080, 1920],
+  ];
+  const card = ([name, slug, what, w, h], copy) =>
+    `<li${copy ? ' aria-hidden="true"' : ''}><figure class="clip">` +
+    `<video muted loop playsinline preload="none" poster="assets/videos/posters/${slug}.jpg" src="assets/videos/${slug}.mp4" width="${w}" height="${h}"></video>` +
+    `<button class="clip-btn" type="button" aria-pressed="false"${copy ? ' tabindex="-1"' : ''} aria-label="Play the ${name} ad, ${what}, with sound"><span class="play" aria-hidden="true">▶</span></button>` +
+    `<figcaption translate="no">${name}</figcaption></figure></li>`;
+  const reel = document.getElementById('reel');
+  reel.innerHTML = clips.map(c => card(c, false)).join('') + (reduceMotion ? '' : clips.map(c => card(c, true)).join(''));
+
+  const work = document.getElementById('work');
+  const reelVideos = [...reel.querySelectorAll('video')];
+  const autoplay = !reduceMotion && !saveData;
+  reel.classList.toggle('auto', autoplay);
+  let activeClip = null, workVisible = false, held = false, scanTimer = 0;
+
+  // One video with sound at a time (the silent clips in the row can run side by side).
+  // A sound-on video mutes the hero instead of stopping it.
+  function soloSound(v) {
+    if (v.muted || v.paused) return;
+    document.querySelectorAll('video').forEach(o => {
+      if (o === v || o.muted) return;
+      if (o === phoneVideo) o.muted = true; else o.pause();
+    });
+    if (activeClip && v !== activeClip) setActive(null);
   }
-  reel.querySelectorAll('video').forEach(v => v.addEventListener('pause', () => stopClip(v)));
+  document.addEventListener('play', e => soloSound(e.target), true);
+  // The hero can get its sound while already playing, which fires no play event
+  phoneVideo.addEventListener('volumechange', () => soloSound(phoneVideo));
+
+  // Only the clips actually on screen play; everything else sits on its poster
+  function scan() {
+    const vw = innerWidth;
+    reelVideos.forEach(v => {
+      if (v === activeClip) return;
+      const r = v.getBoundingClientRect();
+      const play = autoplay && workVisible && !held && r.right > -40 && r.left < vw + 40;
+      if (play && v.paused) v.play().catch(() => {});
+      else if (!play && !v.paused) v.pause();
+    });
+  }
+
+  // Tap a clip: sound on, row holds still. Tap it again: back to silent and moving.
+  function setActive(v) {
+    if (activeClip) {
+      const old = activeClip; activeClip = null;
+      old.muted = true;
+      if (!autoplay) old.pause();
+      old.closest('.clip').classList.remove('active');
+      old.nextElementSibling.setAttribute('aria-pressed', 'false');
+    }
+    if (v) {
+      activeClip = v;
+      v.muted = false; v.currentTime = 0; v.play().catch(() => {});
+      v.closest('.clip').classList.add('active');
+      v.nextElementSibling.setAttribute('aria-pressed', 'true');
+    }
+    reel.classList.toggle('hold', !!activeClip);
+    scan();
+  }
   reel.addEventListener('click', e => {
     const b = e.target.closest('.clip-btn');
     if (!b) return;
     const v = b.previousElementSibling;
-    if (!v.paused) { stopClip(v); return; }
-    v.muted = false;
-    v.closest('.clip').classList.add('active');
-    b.setAttribute('aria-pressed', 'true');
-    v.play().catch(() => stopClip(v));
+    setActive(activeClip === v ? null : v);
   });
 
-  // Anything playing that scrolls well off screen stops
-  const offscreen = new IntersectionObserver(entries => entries.forEach(e => {
-    if (!e.isIntersecting && !e.target.paused && e.target !== phoneVideo) e.target.pause();
-  }));
-  document.querySelectorAll('video').forEach(v => offscreen.observe(v));
+  new IntersectionObserver(([e]) => {
+    workVisible = e.isIntersecting;
+    clearInterval(scanTimer);
+    if (workVisible) { scan(); scanTimer = setInterval(scan, 250); }
+    else { if (activeClip) setActive(null); scan(); }
+  }, { rootMargin: '100px 0px' }).observe(work);
 
-  // Nav turns solid once the hero scrolls away
-  const nav = document.getElementById('nav');
-  new IntersectionObserver(([e]) => nav.classList.toggle('solid', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' })
-    .observe(document.querySelector('.hero-copy'));
+  // Work heading: cycle the word after EVERY while it is on screen; Pause holds the words, the row and the clips
+  if (!reduceMotion) {
+    const swap = document.getElementById('bandSwap');
+    const words = [...swap.children];
+    let at = 0, timer = 0;
+    swap.classList.add('live');
+    const next = () => {
+      const cur = words[at]; at = (at + 1) % words.length; const nxt = words[at];
+      words.forEach(w => {
+        if (w === cur || w === nxt) return;
+        w.style.transition = 'none'; w.className = ''; void w.offsetHeight; w.style.transition = '';
+      });
+      cur.className = 'off'; nxt.className = 'on';
+    };
+    let visible = false;
+    const run = () => { clearInterval(timer); if (visible && !held) timer = setInterval(next, 1400); };
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; run(); }).observe(swap);
+    document.getElementById('bandPause').addEventListener('click', e => {
+      held = !held;
+      work.classList.toggle('held', held);
+      e.currentTarget.setAttribute('aria-pressed', held);
+      e.currentTarget.textContent = held ? 'Play' : 'Pause';
+      run(); scan();
+    });
+  }
 
   // No form backend: the inquiry opens a ready-to-send email to Michelle. Nothing is posted anywhere.
   const form = document.getElementById('inquiry');
